@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+p {
+	font-size: calc(1.25vw + .5vmin);	
+}
+<!-- Slider -->
+.slidecontainer {
+	width: 10%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 25px;
+  border-radius: 5px;  
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider-colour{
+	background: #a3a3a3;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;  
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;  
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+canvas { 
+  height: 50vh; 
+  width: 90vw; 
+}
+
+.dropdown-menu {
+	height: 250px;
+}
+
+.dropdown-item {
+	height: 20%;
+}
+
+.vl {
+	border-left: 1px solid black;
+	height: calc(2vw + .5vmin);		
+}
+</style>
+<!-- BootStrap code from copied/modified from BootStrap documentation -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" 
+integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" 
+integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
+integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+</head>
+<title>Sorting Visualiser</Title>
+<body>
+<!-- Navigation bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<span class="navbar-brand mb-0 h1">Online Apps</span>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<div class="navbar-nav mr-auto">
+			<a class="nav-item nav-link" href="index.html">Home</a>
+			<a class="nav-item active nav-link" href="VisualSort.html">Sorting Visualiser</a>
+			<a class="nav item nav-link" href="Dashboard/index.html">Dashboard</a>
+		</div>
+	</div>
+</nav>
+
+<!-- Body Container -->
+<div class="container-fluid px-lg-5">
+	<div class="row justify-content-center min-vh-100">
+		<div class="col p-3 mb-2 bg-light h1 text-dark border bg-light text-center">
+			Sorting Visualiser<div style="height: 1%;"></div><button class="btn btn-secondary btn-block p-0"><input type="range" min="5" max="49" value="30" class="slider" id="ArrayChange"></button><p class="float-left">number of values: <span id="value"></span></p>
+			<input type="range" min="10" max="1000" value="100" class="slider slider-colour" id="SpeedChange"><p class="float-left">Speed(ms): <span id="speed"></span></p>
+			<div style="height: 5%;"></div>
+			<div class="btn-group" role="group">
+				<button type="button" class="btn btn-secondary btn-lg border-right" id="RandomArray">Random Unsorted</button>
+				<button type="button" class="btn btn-secondary btn-lg border-left" id="Array">Unsorted Array</button>
+			</div>
+			<div class="btn-group dropright" role="group">
+				<button id="btnGroupDrop" type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Choose Sorting Algorithm</button><div style="height: 1%;"></div>	 
+				<div class="dropdown-menu" aria-labelledby="btnGroupDrop">
+					<a class="dropdown-item" id="BubbleSort">Bubble Sort</a>
+					<a class="dropdown-item" id="SelectionSort">Selection Sort</a>
+					<a class="dropdown-item" id="InsertionSort">Insertion Sort</a>
+					<a class="dropdown-item" id="MergeSort">Merge Sort</a>
+					<a class="dropdown-item" id="QuickSort">Quick Sort</a>
+				</div>
+			</div>
+			<canvas id="myCanvas" width="1000px" height="400px" style="border:1px solid black;">Your browser does not support the canvas element.</canvas>
+			<div class="row justify-content-center">
+				<p>Number of swaps: <span id="numOfSwaps"></span>&nbsp;</p><div class="vl"> </div><p>&nbsp;Number of compares: <span id="numOfComp"></span></p>
+			</div>
+		</div>
+	</div>
+</div>
+<footer class="footer py-2 border bg-light">
+	<div class="container text-center">
+		<p>Email: sebfuoco@gmail.com</p>
+	</div>
+</footer>
+<script>
+// variables
+// Array Slider
+var arrayRange = document.getElementById("ArrayChange");
+var output = document.getElementById("value");
+output.innerHTML = arrayRange.value;
+arrayRange.oninput = function(){output.innerHTML = this.value;}
+
+// Speed Slider
+var speedRange = document.getElementById("SpeedChange");
+var speed = document.getElementById("speed");
+speed.innerHTML = speedRange.value;
+speedRange.oninput = function(){speed.innerHTML = this.value;}
+
+// Canvas
+var width = 10;
+var height = []; 
+var setHeight = [-300,-190,-44,-58,-95,-200,-304,-10,-10,-54,-41,-190,-101,
+-321,-91,-75,-82,-100,-100,-209,-124,-123,-310,-94,-71,-43,-11,-54,-75,-75,
+-86,-14,-43,-22,-11,-23,-91,-95,-143,-231,-13,-97,-185,-142,-145,-156,-259,
+-91,-44];
+var y = 400;
+var swaps = 0; var compares = 0;
+var randomArray = "False";
+var canvas = document.getElementById("myCanvas");
+var context = canvas.getContext("2d");
+
+draw();
+
+function nullifier(){
+	document.getElementById("numOfSwaps").innerHTML = null;
+	document.getElementById("numOfComp").innerHTML = null;
+
+}
+// fill array with random numbers so that array is unsorted
+function fillArray(){
+	height = [];
+	if (randomArray == "True"){
+		for (var i = 0; i < arrayRange.value; i++){
+			height.push(Math.floor(Math.random()*-390));
+		}
+	}
+	else {
+		for (var i = 0; i < arrayRange.value; i++) {
+			height.push(setHeight[i]);
+		}
+	}
+}
+
+function draw(){
+	var x = 10; 
+	context.clearRect(0, 0, canvas.width, canvas.height);
+	context.fillStyle = "#FF0000";
+	fillArray();
+	for (var i = 0; i < height.length; i++){
+		context.fillRect(x,y,width,height[i]);
+		x += 20;
+	}
+	nullifier();
+}
+
+// Sorting Algorithms
+async function bubbleSort(){ // Works
+	swaps = 0; compares = 0;
+	var len = height.length;
+	for (var i = len-1; i>=0; i--){
+		x = 10;
+		for(var j = 1; j<=i; j++){
+			if(height[j-1] < height[j]){
+				context.clearRect(x, y, width, height[j-1]);
+				context.clearRect(x+20, y, width,height[j]);
+				
+				var temp = height[j-1];
+				height[j-1] = height[j];
+				height[j] = temp;
+				
+				context.fillRect(x,y,width,height[j-1]);
+				await sleep(speedRange.value);
+				context.fillRect(x+20,y,width,height[j]);
+				await sleep(speedRange.value);
+				document.getElementById("numOfSwaps").innerHTML = swaps += 1;
+			}
+			document.getElementById("numOfComp").innerHTML = compares += 1;
+			x += 20;
+        }
+    }
+} 
+
+async function selectionSort(){ // Done
+	swaps = 0; compares = 0; x = 10;
+	var minIdx, temp, 
+	len = height.length;
+	for(var i = 0; i < len; i++){
+		minIdx = i;
+		for(var j = i+1; j<len; j++){
+			if(height[j]>height[minIdx]){
+				minIdx = j;
+				document.getElementById("numOfSwaps").innerHTML = swaps += 1;	
+			}
+			document.getElementById("numOfComp").innerHTML = compares += 1;
+		}
+		context.fillStyle = "#0000ff";
+		context.fillRect(x+(20*minIdx),y,width,height[minIdx]);
+		context.fillStyle = "#FF0000";
+		await sleep(speedRange.value);
+		context.clearRect(x+(20*i),y,width,height[i]);
+		context.fillRect(x+(20*i),y,width,height[minIdx]);
+		temp = height[i];
+		height[i] = height[minIdx];
+		height[minIdx] = temp;
+		context.fillRect(x+(20*minIdx),y,width,height[minIdx]);
+		await sleep(speedRange.value);
+	}
+}
+
+async function insertionSort(){ // Just need to render
+	context.clearRect(0, 0, canvas.width, canvas.height);
+	swaps = 0; compares = 0; x = 10;
+	const len = height.length;
+	console.log(height);
+	for (let i = 0; i < len; i++) {
+		let el = height[i]; let j;
+		for (j = i - 1; j >= 0 && height[j] < el; j--) {
+			context.clearRect(x+(20*(j+1)),y,width,-500);
+		  	height[j + 1] = height[j];	
+		  	context.fillRect(x+(20*(j+1)),y,width,height[j+1]);
+			document.getElementById("numOfSwaps").innerHTML = swaps += 1;	
+		}
+		context.fillRect(x+(20*j),y,width,height[j]);
+		height[j + 1] = el;
+		document.getElementById("numOfComp").innerHTML = compares += 1;
+	}
+	console.log(height);
+};
+
+// Waits a select period of time
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+$(document).ready(function(){
+	$("#RandomArray").click(function() {
+		randomArray = "True";
+		draw();
+	});
+	$("#Array").click(function() {
+		randomArray = "False";
+		draw();
+	});
+	// Sorting algorithms
+	$("#ArrayChange").click(function() {
+		draw();
+	});
+	$("#BubbleSort").click(function(){
+		nullifier();
+		bubbleSort();
+	});
+	$("#SelectionSort").click(function(){
+		nullifier();
+		selectionSort();
+	});
+	$("#InsertionSort").click(function(){
+		insertionSort();
+	});
+	$("#MergeSort").click(function(){
+		mergeSort();
+	});
+	$("#QuickSort").click(function(){
+		quickSort();
+	});
+});
+</script>
+</body>
+</html>
+
+<!-- References
+Sleep: https://stackoverflow.com/questions/951021/what-is-the-javascript-version-of-sleep
+Sorting algorithms: https://khan4019.github.io/front-end-Interview-Questions/sort.html#selectionSort
+
+-->
