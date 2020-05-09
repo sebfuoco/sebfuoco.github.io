@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Dashboard</title>
+  <!-- Custom fonts for this template-->
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <!-- Custom styles for this template-->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/3.3.7+1/css/sb-admin-2.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="navbar-brand">Online Apps</div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="navbar-nav mr-auto">
+        <a class="nav-item nav-link" href="index.html">Home</a>
+        <a class="nav-item nav-link" href="VisualSort.html">Sorting Visualiser</a>
+        <a class="nav-item active nav-link" href="dashboard.html">Dashboard</a>
+      </div>
+    </div>
+  </nav>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xl-8 col-lg-7 mt-2 mb-4">
+        <!-- Bar Chart -->
+        <div class="card shadow h-100">
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Student Intake by Subject</h6>
+             <div class="dropdown">
+              <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                <div class="dropdown-header">Options:</div>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modal1" data-whatever="Students">Edit</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="chart-bar" style="position: relative; height:30vh;">
+              <canvas id="Students"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Pie Chart -->
+      <div class="col-xl-4 col-lg-5 mt-2 mb-4">
+        <div class="card shadow h-100">
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Number of Working Computers</h6>
+            <div class="dropdown">
+              <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                <div class="dropdown-header">Options:</div>
+                 <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modal2" data-whatever="Computers">Edit</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="chart-pie" style="position: relative; height:25vh;">
+              <canvas id="Computers"></canvas>
+            </div>
+            <div class="mt-4 text-center small">
+              <span class="mr-2">
+                <i class="fas fa-circle text-primary"></i> Operational
+              </span>
+              <span class="mr-2">
+                <i class="fas fa-circle text-success"></i> Faulty
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Stacked Bar graph -->
+      <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Items</h6>
+            <div class="dropdown">
+              <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                <div class="dropdown-header">Options:</div>
+                 <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modal3" data-whatever="Items">Edit</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="chart-pie" style="position: relative; height:25vh;">
+              <canvas id="Items"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12">
+      <!-- Bar Chart -->
+      <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Venues</h6>
+           <div class="dropdown">
+            <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+              <div class="dropdown-header">Options:</div>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modal4" data-whatever="Venues">Edit</a>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chart-bar" style="position: relative; height:25vh;">
+            <canvas id="Venues"></canvas>
+          </div>
+        </div>
+      </div>
+      </div>
+      <div class="col-lg-12">
+        <div class="card shadow mb-4">
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Teacher Information</h6>
+            <div class="dropdown">
+                <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                  <div class="dropdown-header">Options:</div>
+                   <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modal5" data-whatever="Teachers">Edit</a>
+                </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-striped table-bordered" id="dataTable" width="100%" cellspacing="0"></table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 1st Modal -->
+  <div class="modal fade" id="Modal1" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalLabel">Edit Data</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select which data to edit.</div>
+          <form class="pl-3 pr-3 mb-3">
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">Choose Subject:</label>
+              <select class="custom-select" id="inputGroupSelect1">
+                <option value="0">Art</option>
+                <option value="1">Business</option>
+                <option value="2">IT</option>
+                <option value="3">Music</option>
+                <option value="4">Maths</option>
+              </select>
+            </div>
+            <div class="form-group"> 
+              <label for="message-text" class="col-form-label">Quantity:</label>
+              <input class="form-control" id="messageText1" value="">
+            </div>
+        </form>
+        <div class="modal-footer">
+          <a class="btn btn-primary" href="#" onclick="editData(1, messageText1.value)" data-dismiss="modal">Accept</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 2nd Modal -->
+   <div class="modal fade" id="Modal2" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalLabel">Edit Data</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select which data to edit.</div>
+          <form class="pl-3 pr-3 mb-3">
+            <div class="form-group"> 
+              <label for="message-text" class="col-form-label">Choose Computer Status:</label>
+              <select class="custom-select" id="inputGroupSelect2">
+                <option value="0">Operational</option>
+                <option value="1">Faulty</option>
+              </select>
+            </div> 
+              <div class="form-group"> 
+                <label for="message-text" class="col-form-label">Quantity:</label>
+                <input class="form-control" id="messageText2" value="">
+              </div>
+          </form>
+        <div class="modal-footer">
+          <a class="btn btn-primary" href="#" onclick="editData(2, messageText2.value)" data-dismiss="modal">Accept</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 3rd Modal -->
+   <div class="modal fade" id="Modal3" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalLabel">Edit Data</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select which data to edit.</div>
+          <form class="pl-3 pr-3 mb-3">
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">Choose Availabilty:</label>
+                <select class="custom-select" id="inputGroupSelect3">
+                  <option value="0">In-Use</option>
+                  <option value="1">Available</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="message-text" class="col-form-label">Choose Items:</label>
+              <select class="custom-select" id="inputGroupSelect3.1">
+                <option value="0">Chairs</option>
+                <option value="1">Tables</option>
+                <option value="2">Printers</option>
+                <option value="3">Notice Boards</option>
+                <option value="4">Mice</option>
+                <option value="5">Keyboards</option>
+                <option value="6">Monitors</option>
+              </select>
+            </div>
+              <div class="form-group"> 
+                <label for="message-text" class="col-form-label">Quantity:</label>
+                <input class="form-control" id="messageText3" value="">
+              </div>
+          </form>
+        <div class="modal-footer">
+          <a class="btn btn-primary" href="#" onclick="editData(3, messageText3.value)" data-dismiss="modal">Accept</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 4th Modal -->
+   <div class="modal fade" id="Modal4" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalLabel">Edit Data</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select which data to edit.</div>
+          <form class="pl-3 pr-3 mb-3">
+            <div class="form-group">
+                <label for="message-text" class="col-form-label">Choose Venue:</label>
+              <select class="custom-select" id="inputGroupSelect4">
+                <option value="0">Classrooms</option>
+                <option value="1">Labs</option>
+                <option value="2">Offices</option>
+              </select>
+            </div>
+            <div class="form-group"> 
+                <label for="message-text" class="col-form-label">Quantity:</label>
+                <input class="form-control" id="messageText4" value="">
+            </div>
+          </form>
+        <div class="modal-footer">
+          <a class="btn btn-primary" href="#" onclick="editData(4, messageText4.value)" data-dismiss="modal">Accept</a>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- 5th Modal -->
+   <div class="modal fade" id="Modal5" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalLabel">Edit Data</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Select which data to edit.</div>
+          <form class="pl-3 pr-3 mb-3">
+            <div class="form-group">
+              <label for="message-text" class="col-form-label">Choose Teacher</label>
+              <select class="custom-select" id="inputGroupSelect5">
+                <option value="0">Bob Dillion</option>
+                <option value="1">Carol Robinson</option>
+                <option value="2">James Matthews</option>
+                <option value="3">Karen Smtih</option>
+                <option value="4">Steve Williams</option>
+              </select>
+            </div>
+            <div class="form-group"> 
+              <label for="message-text" class="col-form-label">Education Background:</label>
+              <input class="form-control" id="messageText5" value="">
+            </div>
+          </form>
+        <div class="modal-footer">
+          <a class="btn btn-primary" href="#" onclick="editData(5,messageText5.value)" data-dismiss="modal">Accept</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<!-- Custom scripts for all pages-->
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+ <!-- Page level custom scripts -->
+<script>
+var selected = 0, selected2 = 0;
+var colours = ['#4e73df', '#1cc88a', '#36b9cc', '#eb4034', '#ffce56', '#9966ff', '#d99b00','#f04dea'];
+// Local Storage
+if (!localStorage.getItem('StudentsData')) {
+  // Store Students
+  var value = [10, 19, 13, 8, 18];
+  localStorage.setItem("StudentsData", JSON.stringify(value));
+  var StudentData = JSON.parse(localStorage.getItem("StudentsData"));
+  // Store Computers 
+  value = [230, 20];
+  localStorage.setItem("Computers", JSON.stringify(value));
+  var ComputersData = JSON.parse(localStorage.getItem("Computers"));
+  // Store In-Use Items
+  value = [400, 200, 20, 50, 250, 250, 250];
+  localStorage.setItem("UseItem", JSON.stringify(value));
+  var InUseItem = JSON.parse(localStorage.getItem("UseItem"));
+  // Store Free Items
+  value = [100, 50, 5, 5, 50, 50, 50];
+  localStorage.setItem("FreeItem", JSON.stringify(value));
+  var FreeItem = JSON.parse(localStorage.getItem("FreeItem"));
+  // Store Venue
+  value = [100, 20, 60];
+  localStorage.setItem("Venue", JSON.stringify(value));
+  var VenueData = JSON.parse(localStorage.getItem("Venue"));
+  // Store Teachers
+  var dataSet = [
+  ['Bob Dillion','Art'],
+  ['Carol Robinson', 'Maths'],
+  ['James Matthews','Business'],
+  ['Karen Smith', 'Music'],
+  ['Steve Williams', 'IT']
+  ];
+  localStorage.setItem("Teachers", JSON.stringify(dataSet));
+  var TeacherData = JSON.parse(localStorage.getItem("Teachers"));
+}
+var myTable = $('#dataTable').DataTable({
+  data:JSON.parse(localStorage.getItem("Teachers")),
+  columns: [
+    {"title": "Teachers Name" },
+    {"title": "Education Background" } 
+  ]
+});
+// bar graph
+var ctx = document.getElementById('Students').getContext('2d');
+var Students = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Art', 'Business', 'IT', 'Music', 'Maths'],
+        datasets: [{
+            label: 'Number of Students',
+            data: JSON.parse(localStorage.getItem("StudentsData")),
+            backgroundColor: colours,
+        }],
+    },
+    options: {
+      maintainAspectRatio: false,
+      legend: {
+        display: false
+      },
+      layout: {
+        padding: {
+          left: 10,
+          right: 25
+        },
+      },
+      tooltips: {
+            mode: 'index',
+            intersect: false,
+      },
+        scales: {
+            xAxes: [{
+              gridLines: {
+                display: false,
+                drawBorder: false
+              }
+            }],
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                },
+                gridLines: {
+                    color: "rgb(234, 236, 244)",
+                    zeroLineColor: "rgb(234, 236, 244)",
+                    drawBorder: false,
+                    borderDash: [2],
+                    zeroLineBorderDash: [2]
+                }
+            }]
+        }
+    }
+});
+// Pie Chart Example
+var ctx = document.getElementById("Computers");
+var Computers = new Chart(ctx, {
+  type: 'pie',
+  data: {
+    labels: ["Operational", "Faulty"],
+    datasets: [{
+      data: JSON.parse(localStorage.getItem("Computers")),
+      backgroundColor: colours,
+    }],
+  },
+  options: {
+    maintainAspectRatio: false,
+    tooltips: {
+      backgroundColor: "rgb(255,255,255)",
+      bodyFontColor: "#858796",
+      borderColor: '#dddfeb',
+      borderWidth: 1,
+      xPadding: 15,
+      yPadding: 15,
+      displayColors: false,
+      caretPadding: 10,
+    },
+      legend: {
+      display: false
+    }
+  },
+});
+//Stacked bar graph
+var ctx = document.getElementById("Items");
+var Items = new Chart(ctx, {
+  type: 'bar',
+  data: {
+  labels: ["Chairs", "Tables", "Printers","Notice Boards", "Mice", "Keyboards", "Monitors"],
+  datasets: [{
+    label: 'In-Use',
+    backgroundColor: colours,
+    data: JSON.parse(localStorage.getItem("UseItem"))
+    },
+    {
+      label: 'Available',
+      backgroundColor: colours.slice().reverse(),
+      data: JSON.parse(localStorage.getItem("FreeItem"))
+    }],
+  },
+  options: {
+    maintainAspectRatio: false,
+    legend: {
+      position: 'bottom',
+    },
+    tooltips: {
+      mode: 'index',
+      intersect: false,
+    },
+    scales: {
+      xAxes: [{
+        stacked: true,
+      }],
+      yAxes: [{
+        stacked: true,
+         ticks: {
+           beginAtZero: true
+          },
+      gridLines: {
+          color: "rgb(234, 236, 244)",
+          zeroLineColor: "rgb(234, 236, 244)",
+          drawBorder: false,
+          borderDash: [2],
+          zeroLineBorderDash: [2]
+      }
+      }]
+    }
+  },
+});
+// bar graph
+var ctx = document.getElementById('Venues').getContext('2d');
+var Venues = new Chart(ctx, {
+    type: 'horizontalBar',
+    data: {
+        labels: ['Classrooms', 'Labs', 'Offices'],
+        datasets: [{
+            label: 'Quantity',
+            data: JSON.parse(localStorage.getItem("Venue")),
+            backgroundColor: colours,
+        }],
+    },
+    options: {
+      maintainAspectRatio: false,
+      legend: {
+        display: false
+      },
+      layout: {
+        padding: {
+          left: 10,
+          right: 25
+        },
+      },
+        tooltips: {
+            mode: 'index',
+            intersect: false,
+            axis: 'y'
+        },
+        scales: {
+            xAxes: [{
+              gridLines: {
+                display: false,
+                drawBorder: false
+              },
+              ticks: {
+                beginAtZero: true
+                },
+              gridLines: {
+                color: "rgb(234, 236, 244)",
+                zeroLineColor: "rgb(234, 236, 244)",
+                drawBorder: false,
+                borderDash: [2],
+                zeroLineBorderDash: [2]
+                }
+            }]
+        }
+    }
+});
+// Scripts
+document.getElementById("inputGroupSelect1").addEventListener('change',function(){
+  selected = $(this).children("option:selected").val();
+});
+document.getElementById("inputGroupSelect2").addEventListener('change',function(){
+  selected = $(this).children("option:selected").val();
+});
+document.getElementById("inputGroupSelect3").addEventListener('change',function(){
+  selected2 = $(this).children("option:selected").val();
+});
+document.getElementById("inputGroupSelect3.1").addEventListener('change',function(){
+  selected = $(this).children("option:selected").val();
+});
+document.getElementById("inputGroupSelect4").addEventListener('change',function(){
+  selected = $(this).children("option:selected").val();
+});
+document.getElementById("inputGroupSelect5").addEventListener('change',function(){
+  selected = $(this).children("option:selected").val();
+});
+// Edit data
+function editData(id,message){
+  switch(id){
+    case 1:
+      Students.data.datasets[0].data[selected] = message; 
+      var StudentData = JSON.parse(localStorage.getItem("StudentsData"));
+      StudentData[selected] = message;
+      localStorage.setItem("StudentsData", JSON.stringify(StudentData));
+      Students.update();
+      break;
+    case 2:
+      Computers.data.datasets[0].data[selected] = message;
+      var ComputersData = JSON.parse(localStorage.getItem("Computers"));
+      ComputersData[selected] = message;
+      localStorage.setItem("Computers", JSON.stringify(ComputersData));
+      Computers.update();
+      break;
+    case 3:
+      Items.data.datasets[selected2].data[selected] = message;
+      if(selected2 == 0){
+        var InUseItem = JSON.parse(localStorage.getItem("UseItem"));
+        InUseItem[selected] = message;
+        localStorage.setItem("UseItem", JSON.stringify(InUseItem));
+      }
+      else{
+        var FreeItem = JSON.parse(localStorage.getItem("FreeItem"));
+        FreeItem[selected] = message;
+        localStorage.setItem("FreeItem", JSON.stringify(FreeItem));
+      }
+      Items.update();
+      break;
+    case 4:
+      Venues.data.datasets[0].data[selected] = message;
+      var VenueData = JSON.parse(localStorage.getItem("Venue"));
+      VenueData[selected] = message;
+      localStorage.setItem("Venue", JSON.stringify(VenueData));
+      Venues.update();
+      break;
+    case 5:
+      var TeacherData = JSON.parse(localStorage.getItem("Teachers"));
+      TeacherData[selected].pop();
+      TeacherData[selected].push(message);
+      localStorage.setItem("Teachers", JSON.stringify(TeacherData));
+      if(selected == 0) {
+        myTable.cell({row:0, column:1}).data(message);
+      }
+      else if(selected == 1){
+        myTable.cell({row:1, column:1}).data(message);
+      }
+      else if(selected == 2){
+        myTable.cell({row:2, column:1}).data(message);
+      }
+      else if(selected == 3){
+        myTable.cell({row:3, column:1}).data(message);
+      }
+      else if(selected == 4){
+        myTable.cell({row:4, column:1}).data(message);
+      }
+      break;
+    default:
+      break;
+  }
+}
+</script>
+</body>
+</html>

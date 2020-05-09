@@ -2,17 +2,8 @@
 <html lang="en">
 <head>
 <style>
-.smallText {
-	font-size: calc(1.5px + 2vmin);
-}
-
-.midText {
-	font-size: calc(1.75px + 4vmin);
-}
-
 .vl {
 	border-left: 1px solid black;
-	height: calc(4px + 2vmin);		
 }
 <!-- Slider -->
 .slidecontainer {
@@ -80,8 +71,8 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
 <title>Sorting Visualiser</Title>
 <body>
 <!-- Navigation bar -->
-<nav class="navbar navbar-expand-lg navbar-light border bg-light smallText">
-	<span class="navbar-brand mb-0 h1" style="font-size: calc(1.5px + 2vmin);">Online Apps</span>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	<div class="navbar-brand">Online Apps</div>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
@@ -89,34 +80,32 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
 		<div class="navbar-nav mr-auto">
 			<a class="nav-item nav-link" href="index.html">Home</a>
 			<a class="nav-item active nav-link" href="VisualSort.html">Sorting Visualiser</a>
-			<a class="nav item nav-link" href="Dashboard/index.html">Dashboard</a>
+			<a class="nav item nav-link" href="dashboard.html">Dashboard</a>
 		</div>
 	</div>
 </nav>
 <!-- Body Container -->
 <div class="container-fluid">
-	<div class="row justify-content-center min-vh-100">
-		<div class="col p-3 mb-2 bg-light h1 text-dark text-center">
-			<p class="midText">Sorting Visualiser</p><div style="height: 1%;"></div><input type="range" min="5" max="49" value="30" class="slider" id="ArrayChange"><p class="float-left"><p class="smallText">number of values: <span id="value"></span></p>
-			<input type="range" min="10" max="1000" value="100" class="slider" id="SpeedChange"><p class="float-left"><p class="smallText">Speed(ms): <span id="speed"></span></p>
-			<div style="height: 5%;"></div>
+	<div class="row justify-content-center">
+		<div class="col p-3 mb-2 bg-light text-dark text-center">
+			<p class="h1">Sorting Visualiser</p><div style="height: 1%;"></div><input type="range" min="5" max="49" value="30" class="slider" id="ArrayChange"><p>number of values: <span id="value"></span></p>
+			<input type="range" min="10" max="1000" value="100" class="slider" id="SpeedChange"><p>Speed(ms): <span id="speed"></span></p>
 			<div class="btn-group" role="group">
-				<button type="button" class="btn btn-secondary btn-lg border-right" id="RandomArray"><p class="smallText mb-0">Random Unsorted</p></button>
-				<button type="button" class="btn btn-secondary btn-lg border-left" id="Array"><p class="smallText mb-0">Unsorted Array</p></button>
+				<button type="button" class="btn btn-secondary btn-lg border-right" id="RandomArray">Random Unsorted</button>
+				<button type="button" class="btn btn-secondary btn-lg border-left" id="Array">Unsorted Array</button>
 			</div>
 			<div class="btn-group dropright" role="group">
-				<button id="btnGroupDrop" type="button" class="btn btn-primary btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><p class="smallText mb-0">Choose Sorting Algorithm</p></button><div style="height: 1%;"></div>	 
+				<button id="btnGroupDrop" type="button" class="btn btn-primary btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Choose Sorting Algorithm</button>	 
 				<div class="dropdown-menu" aria-labelledby="btnGroupDrop">
-					<a class="dropdown-item smallText" id="BubbleSort">Bubble Sort</a>
-					<a class="dropdown-item smallText" id="SelectionSort">Selection Sort</a>
-					<a class="dropdown-item smallText" id="InsertionSort">Insertion Sort</a>
-					<a class="dropdown-item smallText" id="MergeSort">Merge Sort</a>
-					<a class="dropdown-item smallText" id="QuickSort">Quick Sort</a>
+					<a class="dropdown-item" id="BubbleSort">Bubble Sort</a>
+					<a class="dropdown-item" id="SelectionSort">Selection Sort</a>
+					<a class="dropdown-item" id="MergeSort">Merge Sort</a>
+					<a class="dropdown-item" id="QuickSort">Quick Sort</a>
 				</div>
 			</div>
 			<canvas id="myCanvas" width="1000px" height="400px" style="border:1px solid black;">Your browser does not support the canvas element.</canvas>
-			<div class="row justify-content-center smallText">
-				<p>Number of swaps: <span id="numOfSwaps"></span>&nbsp;</p><div class="vl"> </div><p>&nbsp;Number of compares: <span id="numOfComp"></span></p>
+			<div class="row justify-content-center">
+				<p>Number of swaps: <p id="numOfSwaps"></p>&nbsp;|&nbsp;Number of compares: <p id="numOfComp"></p></p>
 			</div>
 		</div>
 	</div>
