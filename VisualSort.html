@@ -141,7 +141,6 @@ draw();
 function nullifier(){
 	document.getElementById("numOfSwaps").innerHTML = null;
 	document.getElementById("numOfComp").innerHTML = null;
-
 }
 // fill array with random numbers so that array is unsorted
 function fillArray(){
@@ -258,7 +257,7 @@ $(document).ready(function(){
 		draw();
 	});
 	// Sorting algorithms
-	$("#ArrayChange").click(function() {
+	$("#ArrayChange").change(function() {
 		draw();
 	});
 	$("#BubbleSort").click(function(){
