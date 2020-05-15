@@ -43,7 +43,7 @@
               <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                 <div class="dropdown-header">Options:</div>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modal1" data-whatever="Students">Edit</a>
+                <a class="dropdown-item" href="#" onclick="openModal(1)" data-toggle="modal" data-target="#Modal">Edit</a>
               </div>
             </div>
           </div>
@@ -66,7 +66,7 @@
               <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                 <div class="dropdown-header">Options:</div>
                  <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modal2" data-whatever="Computers">Edit</a>
+                <a class="dropdown-item" href="#" onclick="openModal(2)" data-toggle="modal" data-target="#Modal">Edit</a>
               </div>
             </div>
           </div>
@@ -97,7 +97,7 @@
               <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                 <div class="dropdown-header">Options:</div>
                  <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modal3" data-whatever="Items">Edit</a>
+                <a class="dropdown-item" href="#" onclick="openModal(3)" data-toggle="modal" data-target="#Modal">Edit</a>
               </div>
             </div>
           </div>
@@ -120,7 +120,7 @@
             <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
               <div class="dropdown-header">Options:</div>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modal4" data-whatever="Venues">Edit</a>
+              <a class="dropdown-item" href="#" onclick="openModal(4)" data-toggle="modal" data-target="#Modal">Edit</a>
             </div>
           </div>
         </div>
@@ -142,7 +142,7 @@
                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
                   <div class="dropdown-header">Options:</div>
                    <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#Modal5" data-whatever="Teachers">Edit</a>
+                  <a class="dropdown-item" href="#" onclick="openModal(5)" data-toggle="modal" data-target="#Modal">Edit</a>
                 </div>
             </div>
           </div>
@@ -156,7 +156,7 @@
     </div>
   </div>
   <!-- 1st Modal -->
-  <div class="modal fade" id="Modal1" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -168,163 +168,25 @@
         <div class="modal-body">Select which data to edit.</div>
           <form class="pl-3 pr-3 mb-3">
             <div class="form-group">
-              <label for="message-text" class="col-form-label">Choose Subject:</label>
-              <select class="custom-select" id="inputGroupSelect1">
-                <option value="0">Art</option>
-                <option value="1">Business</option>
-                <option value="2">IT</option>
-                <option value="3">Music</option>
-                <option value="4">Maths</option>
-              </select>
+              <label for="message-text" class="col-form-label" id="dropdownLabel"></label>
+              <select class="custom-select" id="inputGroupSelect"></select>
+            </div>
+            <div class="form-group">
+              <label for="message-text" class="col-form-label" id="textLabel2"></label>
+                <select class="custom-select" id="inputGroupSelect2">
+                </select>
             </div>
             <div class="form-group"> 
-              <label for="message-text" class="col-form-label">Quantity:</label>
-              <input class="form-control" id="messageText1" value="">
+              <label for="message-text" class="col-form-label" id="textLabel"></label>
+              <input class="form-control" id="messageText">
             </div>
         </form>
         <div class="modal-footer">
-          <a class="btn btn-primary" href="#" onclick="editData(1, messageText1.value)" data-dismiss="modal">Accept</a>
+          <a class="btn btn-primary" href="#" id="submitBtn" onclick="editData(messageText.value)" data-dismiss="modal">Submit</a>
         </div>
       </div>
     </div>
   </div>
-  <!-- 2nd Modal -->
-   <div class="modal fade" id="Modal2" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="ModalLabel">Edit Data</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select which data to edit.</div>
-          <form class="pl-3 pr-3 mb-3">
-            <div class="form-group"> 
-              <label for="message-text" class="col-form-label">Choose Computer Status:</label>
-              <select class="custom-select" id="inputGroupSelect2">
-                <option value="0">Operational</option>
-                <option value="1">Faulty</option>
-              </select>
-            </div> 
-              <div class="form-group"> 
-                <label for="message-text" class="col-form-label">Quantity:</label>
-                <input class="form-control" id="messageText2" value="">
-              </div>
-          </form>
-        <div class="modal-footer">
-          <a class="btn btn-primary" href="#" onclick="editData(2, messageText2.value)" data-dismiss="modal">Accept</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- 3rd Modal -->
-   <div class="modal fade" id="Modal3" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="ModalLabel">Edit Data</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select which data to edit.</div>
-          <form class="pl-3 pr-3 mb-3">
-            <div class="form-group">
-              <label for="message-text" class="col-form-label">Choose Availabilty:</label>
-                <select class="custom-select" id="inputGroupSelect3">
-                  <option value="0">In-Use</option>
-                  <option value="1">Available</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="message-text" class="col-form-label">Choose Items:</label>
-              <select class="custom-select" id="inputGroupSelect3.1">
-                <option value="0">Chairs</option>
-                <option value="1">Tables</option>
-                <option value="2">Printers</option>
-                <option value="3">Notice Boards</option>
-                <option value="4">Mice</option>
-                <option value="5">Keyboards</option>
-                <option value="6">Monitors</option>
-              </select>
-            </div>
-              <div class="form-group"> 
-                <label for="message-text" class="col-form-label">Quantity:</label>
-                <input class="form-control" id="messageText3" value="">
-              </div>
-          </form>
-        <div class="modal-footer">
-          <a class="btn btn-primary" href="#" onclick="editData(3, messageText3.value)" data-dismiss="modal">Accept</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- 4th Modal -->
-   <div class="modal fade" id="Modal4" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="ModalLabel">Edit Data</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select which data to edit.</div>
-          <form class="pl-3 pr-3 mb-3">
-            <div class="form-group">
-                <label for="message-text" class="col-form-label">Choose Venue:</label>
-              <select class="custom-select" id="inputGroupSelect4">
-                <option value="0">Classrooms</option>
-                <option value="1">Labs</option>
-                <option value="2">Offices</option>
-              </select>
-            </div>
-            <div class="form-group"> 
-                <label for="message-text" class="col-form-label">Quantity:</label>
-                <input class="form-control" id="messageText4" value="">
-            </div>
-          </form>
-        <div class="modal-footer">
-          <a class="btn btn-primary" href="#" onclick="editData(4, messageText4.value)" data-dismiss="modal">Accept</a>
-        </div>
-      </div>
-    </div>
-  </div>
-    <!-- 5th Modal -->
-   <div class="modal fade" id="Modal5" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="ModalLabel">Edit Data</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Select which data to edit.</div>
-          <form class="pl-3 pr-3 mb-3">
-            <div class="form-group">
-              <label for="message-text" class="col-form-label">Choose Teacher</label>
-              <select class="custom-select" id="inputGroupSelect5">
-                <option value="0">Bob Dillion</option>
-                <option value="1">Carol Robinson</option>
-                <option value="2">James Matthews</option>
-                <option value="3">Karen Smtih</option>
-                <option value="4">Steve Williams</option>
-              </select>
-            </div>
-            <div class="form-group"> 
-              <label for="message-text" class="col-form-label">Education Background:</label>
-              <input class="form-control" id="messageText5" value="">
-            </div>
-          </form>
-        <div class="modal-footer">
-          <a class="btn btn-primary" href="#" onclick="editData(5,messageText5.value)" data-dismiss="modal">Accept</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 </div>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -335,6 +197,75 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
  <!-- Page level custom scripts -->
 <script>
+function openModal(number){
+  switch(number){
+    case 1:
+      var dropdownContent = [["Art", "Business", "IT", "Music", "Maths"]];
+      document.getElementById("dropdownLabel").innerHTML = "Choose Subject:";
+      document.getElementById("textLabel").innerHTML = "Quantity:";
+      document.getElementById("submitBtn").value = "Students";
+      dropdownLoop(dropdownContent, 0);
+      break;
+    case 2:
+      var dropdownContent = [["Operational", "Faulty"]];
+      document.getElementById("dropdownLabel").innerHTML = "Choose Computer Status:";
+      document.getElementById("textLabel").innerHTML = "Quantity:";
+      document.getElementById("submitBtn").value = "Computers";
+      dropdownLoop(dropdownContent, 0);
+      break;
+    case 3:
+      var dropdownContent = [["In-Use", "Available"],["Chairs", "Tables", "Printers", "Notice Boards", "Mice", "Keyboards", "Monitors"]];
+      document.getElementById("dropdownLabel").innerHTML = "Choose Availabilty:";
+      document.getElementById("textLabel2").innerHTML = "Choose Items:";
+      document.getElementById("textLabel").innerHTML = "Quantity:";
+      document.getElementById("submitBtn").value = "Items";
+      dropdownLoop(dropdownContent, 1);
+      break;
+    case 4:
+      var dropdownContent = [["Classroom", "Lab", "Office"]];
+      document.getElementById("dropdownLabel").innerHTML = "Choose Venue:";
+      document.getElementById("textLabel").innerHTML = "Quantity:";
+      document.getElementById("submitBtn").value = "Venues";
+      dropdownLoop(dropdownContent, 0);
+      break;
+    case 5:
+      var dropdownContent = [["Bob Dillion", "Carol Robinson", "James Matthews", "Karen Smith", "Steve Williams"]];
+      document.getElementById("dropdownLabel").innerHTML = "Choose Teacher:";
+      document.getElementById("textLabel").innerHTML = "Education Background:";
+      document.getElementById("submitBtn").value = "Teachers";
+      dropdownLoop(dropdownContent, 0);
+      break;
+  }
+}
+
+function dropdownLoop(dropdownContent, secondDrop){
+    var select = document.getElementById("inputGroupSelect");
+    var select2 = document.getElementById("inputGroupSelect2");
+    var selectLabel2 = document.getElementById("textLabel2");
+    $(select).empty();  
+    $(select2).empty();  
+    for (var i = 0; i < dropdownContent[0].length; i++){
+      var option = document.createElement("option");
+      option.text = dropdownContent[0][i];
+      option.value = i;
+      select.appendChild(option);
+    }
+    if (secondDrop == 0){
+      select2.style.display = "none";
+      selectLabel2.style.display = "none";
+    }
+    else if (secondDrop == 1){
+      select2.style.display = "block";
+      selectLabel2.style.display = "block";
+      for (var i = 0; i < dropdownContent[1].length; i++){
+        var option = document.createElement("option");
+        option.text = dropdownContent[1][i];
+        option.value = i;
+        select2.appendChild(option);
+      }
+    }
+}
+
 var selected = 0, selected2 = 0;
 var colours = ['#4e73df', '#1cc88a', '#36b9cc', '#eb4034', '#ffce56', '#9966ff', '#d99b00','#f04dea'];
 // Local Storage
@@ -549,42 +480,32 @@ var Venues = new Chart(ctx, {
     }
 });
 // Scripts
-document.getElementById("inputGroupSelect1").addEventListener('change',function(){
+document.getElementById("inputGroupSelect").addEventListener('change',function(){
   selected = $(this).children("option:selected").val();
 });
 document.getElementById("inputGroupSelect2").addEventListener('change',function(){
-  selected = $(this).children("option:selected").val();
-});
-document.getElementById("inputGroupSelect3").addEventListener('change',function(){
   selected2 = $(this).children("option:selected").val();
 });
-document.getElementById("inputGroupSelect3.1").addEventListener('change',function(){
-  selected = $(this).children("option:selected").val();
-});
-document.getElementById("inputGroupSelect4").addEventListener('change',function(){
-  selected = $(this).children("option:selected").val();
-});
-document.getElementById("inputGroupSelect5").addEventListener('change',function(){
-  selected = $(this).children("option:selected").val();
-});
+
 // Edit data
-function editData(id,message){
+function editData(message){
+  id = document.getElementById("submitBtn").value;
   switch(id){
-    case 1:
+    case "Students":
       Students.data.datasets[0].data[selected] = message; 
       var StudentData = JSON.parse(localStorage.getItem("StudentsData"));
       StudentData[selected] = message;
       localStorage.setItem("StudentsData", JSON.stringify(StudentData));
       Students.update();
       break;
-    case 2:
+    case "Computers":
       Computers.data.datasets[0].data[selected] = message;
       var ComputersData = JSON.parse(localStorage.getItem("Computers"));
       ComputersData[selected] = message;
       localStorage.setItem("Computers", JSON.stringify(ComputersData));
       Computers.update();
       break;
-    case 3:
+    case "Items":
       Items.data.datasets[selected2].data[selected] = message;
       if(selected2 == 0){
         var InUseItem = JSON.parse(localStorage.getItem("UseItem"));
@@ -598,14 +519,14 @@ function editData(id,message){
       }
       Items.update();
       break;
-    case 4:
+    case "Venues":
       Venues.data.datasets[0].data[selected] = message;
       var VenueData = JSON.parse(localStorage.getItem("Venue"));
       VenueData[selected] = message;
       localStorage.setItem("Venue", JSON.stringify(VenueData));
       Venues.update();
       break;
-    case 5:
+    case "Teachers":
       var TeacherData = JSON.parse(localStorage.getItem("Teachers"));
       TeacherData[selected].pop();
       TeacherData[selected].push(message);

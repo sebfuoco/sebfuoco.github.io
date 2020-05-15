@@ -86,9 +86,9 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
 </nav>
 <!-- Body Container -->
 <div class="container-fluid">
-	<div class="row justify-content-center">
-		<div class="col p-3 mb-2 bg-light text-dark text-center">
-			<p class="h1">Sorting Visualiser</p><div style="height: 1%;"></div><input type="range" min="5" max="49" value="30" class="slider" id="ArrayChange"><p>number of values: <span id="value"></span></p>
+	<div class="row justify-content-center min-vh-100">
+		<div class="col p-3 mb-2 text-dark text-center">
+			<h1 class="display-4">Sorting Visualiser</h1><div style="height: 1%;"></div><input type="range" min="5" max="49" value="30" class="slider" id="ArrayChange"><p>number of values: <span id="value"></span></p>
 			<input type="range" min="10" max="1000" value="100" class="slider" id="SpeedChange"><p>Speed(ms): <span id="speed"></span></p>
 			<div class="btn-group" role="group">
 				<button type="button" class="btn btn-secondary btn-lg border-right" id="RandomArray">Random Unsorted</button>
@@ -105,7 +105,7 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
 			</div>
 			<canvas id="myCanvas" width="1000px" height="400px" style="border:1px solid black;">Your browser does not support the canvas element.</canvas>
 			<div class="row justify-content-center">
-				<p>Number of swaps: <p id="numOfSwaps"></p>&nbsp;|&nbsp;Number of compares: <p id="numOfComp"></p></p>
+				<p>Number of swaps:&nbsp;<p id="numOfSwaps"></p>&nbsp;|&nbsp;Number of compares:&nbsp;<p id="numOfComp"></p></p>
 			</div>
 		</div>
 	</div>
