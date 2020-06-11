@@ -47,10 +47,8 @@
   background: #4CAF50;
   cursor: pointer;
 }
-
-canvas { 
-  height: 50vh; 
-  width: 90vw; 
+* {
+  border-radius: 0 !important;
 }
 </style>
 <!-- BootStrap code from copied/modified from BootStrap documentation -->
@@ -85,31 +83,32 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
 	</div>
 </nav>
 <!-- Body Container -->
-<div class="container-fluid">
+<div class="container-fluid bg-light">
 	<div class="row justify-content-center min-vh-100">
 		<div class="col p-3 mb-2 text-dark text-center">
-			<h1 class="display-4">Sorting Visualiser</h1><div style="height: 1%;"></div><input type="range" min="5" max="49" value="30" class="slider" id="ArrayChange"><p>number of values: <span id="value"></span></p>
+			<h1 class="display-4">Sorting Visualiser</h1><div style="height: 1%;"></div><input type="range" min="5" max="50" value="30" class="slider" id="ArrayChange"><p>number of values: <span id="value"></span></p>
 			<input type="range" min="10" max="1000" value="100" class="slider" id="SpeedChange"><p>Speed(ms): <span id="speed"></span></p>
-			<div class="btn-group" role="group">
-				<button type="button" class="btn btn-secondary btn-lg border-right" id="RandomArray">Random Unsorted</button>
-				<button type="button" class="btn btn-secondary btn-lg border-left" id="Array">Unsorted Array</button>
-			</div>
-			<div class="btn-group dropright" role="group">
-				<button id="btnGroupDrop" type="button" class="btn btn-primary btn-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Choose Sorting Algorithm</button>	 
-				<div class="dropdown-menu" aria-labelledby="btnGroupDrop">
-					<a class="dropdown-item" id="BubbleSort">Bubble Sort</a>
-					<a class="dropdown-item" id="SelectionSort">Selection Sort</a>
-					<a class="dropdown-item" id="MergeSort">Merge Sort</a>
-					<a class="dropdown-item" id="QuickSort">Quick Sort</a>
+			<!-- Bar Chart -->
+	          	<div class="row btn-group d-flex p-2" role="group">
+					<button type="button" class="btn btn-secondary btn-lg" id="RandomArray">Random Unsorted</button>
+					<button type="button" class="btn btn-secondary border-left btn-lg" id="Array">Unsorted Array</button>
+					<button id="btnGroupDrop" type="button" class="btn btn-primary border-left btn-lg" data-toggle="dropdown">Choose Sorting Algorithm</button>	 
+					<div class="dropdown-menu" aria-labelledby="btnGroupDrop">
+						<a class="dropdown-item" id="BubbleSort">Bubble Sort</a>
+						<a class="dropdown-item" id="SelectionSort">Selection Sort</a>
+						<a class="dropdown-item" id="QuickSort">Quick Sort</a>
+					</div>
 				</div>
-			</div>
-			<canvas id="myCanvas" width="1000px" height="400px" style="border:1px solid black;">Your browser does not support the canvas element.</canvas>
+            	<div class="row chart-bar bg-white p-2" style="position: relative; height:50vh;">
+              		<canvas id="Sort"></canvas>
+           		</div>
 			<div class="row justify-content-center">
 				<p>Number of swaps:&nbsp;<p id="numOfSwaps"></p>&nbsp;|&nbsp;Number of compares:&nbsp;<p id="numOfComp"></p></p>
 			</div>
 		</div>
 	</div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 <script>
 // Array Slider
 var arrayRange = document.getElementById("ArrayChange");
@@ -124,30 +123,25 @@ speed.innerHTML = speedRange.value;
 speedRange.oninput = function(){speed.innerHTML = this.value;}
 
 // Canvas
-var width = 10;
-var height = []; 
-var setHeight = [-300,-190,-44,-58,-95,-200,-304,-10,-10,-54,-41,-190,-101,
--321,-91,-75,-82,-100,-100,-209,-124,-123,-310,-94,-71,-43,-11,-54,-75,-75,
--86,-14,-43,-22,-11,-23,-91,-95,-143,-231,-13,-97,-185,-142,-145,-156,-259,
--91,-44];
-var y = 400;
+var height = [];
 var swaps = 0; var compares = 0;
 var randomArray = "False";
-var canvas = document.getElementById("myCanvas");
-var context = canvas.getContext("2d");
-
-draw();
 
 function nullifier(){
+	swaps = 0; compares = 0;
 	document.getElementById("numOfSwaps").innerHTML = null;
 	document.getElementById("numOfComp").innerHTML = null;
 }
 // fill array with random numbers so that array is unsorted
 function fillArray(){
+	var setHeight = [100, 90, 44, 58, 95, 40, 50, 10, 10, 54, 41, 19, 11,
+ 	21, 91, 75, 82, 10, 10, 29, 24, 13, 30, 94, 71, 43, 11, 54, 75, 75,
+ 	86, 14, 43, 22, 11, 23, 91, 95, 43, 31, 13, 97, 85, 42, 45, 56, 59,
+ 	91, 44, 22];
 	height = [];
 	if (randomArray == "True"){
 		for (var i = 0; i < arrayRange.value; i++){
-			height.push(Math.floor(Math.random()*-390));
+			height.push(Math.floor(Math.random()*100));
 		}
 	}
 	else {
@@ -157,92 +151,160 @@ function fillArray(){
 	}
 }
 
-function draw(){
-	var x = 10; 
-	context.clearRect(0, 0, canvas.width, canvas.height);
-	context.fillStyle = "#FF0000";
-	fillArray();
-	for (var i = 0; i < height.length; i++){
-		context.fillRect(x,y,width,height[i]);
-		x += 20;
+function draw(type){
+	if (type == "numberChange"){
+		for (var i = 0, j = height.length; i < j; i++){
+        	Sort.data.datasets[0].data.pop();
+        }
+        fillArray();
+        for (var i = 0; i < height.length; i++){
+        	Sort.data.datasets[0].data.push(height[i]);
+        }
 	}
-	nullifier();
+	else {
+		fillArray();
+
+		for (var i = 0; i < height.length; i++){
+       		Sort.data.datasets[0].data[i] = height[i]; 
+		}
+	}
+	Sort.update();
 }
 
+fillArray();
+var colours = ['#4e73df', '#1cc88a', '#36b9cc', '#eb4034', '#ffce56', '#9966ff', '#d99b00','#f04dea'];
+// bar graph
+var ctx = document.getElementById('Sort').getContext('2d');
+var Sort = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: height,
+        datasets: [{
+            label: 'Sorting Visualiser',
+            data: height,
+            backgroundColor: ["#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034", "#eb4034"],
+        }],
+    },
+    options: {
+    	tooltips: {
+        	enabled: false
+    	},
+    	maintainAspectRatio: false,
+    	legend: {
+        display: false
+      	},
+      	layout: {
+        	padding: {
+        		left: 10,
+          		right: 25
+        	},
+      	},
+        scales: {
+            xAxes: [{
+            	gridLines: {
+              		display: false,
+                	drawBorder: false
+              	}
+            }],
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                },
+                gridLines: {
+                    color: "rgb(234, 236, 244)",
+                    zeroLineColor: "rgb(234, 236, 244)",
+                    drawBorder: false,
+                    borderDash: [2],
+                    zeroLineBorderDash: [2]
+                }
+            }]
+        }
+    }
+});
 // Sorting Algorithms
 async function bubbleSort(){ // Works
-	swaps = 0; compares = 0;
 	var len = height.length;
 	for (var i = len-1; i>=0; i--){
-		x = 10;
 		for(var j = 1; j<=i; j++){
-			if(height[j-1] < height[j]){
-				context.clearRect(x, y, width, height[j-1]);
-				context.clearRect(x+20, y, width,height[j]);
-				
+			if(height[j-1] > height[j]){
+				Sort.data.datasets[0].backgroundColor[j] = "blue";
+				Sort.update();
+				await sleep(speedRange.value);
 				var temp = height[j-1];
 				height[j-1] = height[j];
 				height[j] = temp;
-				
-				context.fillRect(x,y,width,height[j-1]);
-				await sleep(speedRange.value);
-				context.fillRect(x+20,y,width,height[j]);
+       			Sort.data.datasets[0].data[j] = height[j]; 
+       			Sort.data.datasets[0].data[j-1] = height[j-1]; 
+				Sort.data.datasets[0].backgroundColor[j] = "#eb4034";
+       			Sort.update();
 				await sleep(speedRange.value);
 				document.getElementById("numOfSwaps").innerHTML = swaps += 1;
 			}
 			document.getElementById("numOfComp").innerHTML = compares += 1;
-			x += 20;
         }
     }
 } 
 
 async function selectionSort(){ // Done
-	swaps = 0; compares = 0; x = 10;
-	var minIdx, temp, 
-	len = height.length;
+	var minIdx, temp, len = height.length;
 	for(var i = 0; i < len; i++){
 		minIdx = i;
 		for(var j = i+1; j<len; j++){
-			if(height[j]>height[minIdx]){
+			Sort.data.datasets[0].backgroundColor[minIdx] = "blue";
+			Sort.update();
+			if(height[j] < height[minIdx]){
+				await sleep(speedRange.value);
+				Sort.data.datasets[0].backgroundColor[minIdx] = "#eb4034";
+				Sort.update();
 				minIdx = j;
 				document.getElementById("numOfSwaps").innerHTML = swaps += 1;	
 			}
 			document.getElementById("numOfComp").innerHTML = compares += 1;
 		}
-		context.fillStyle = "#0000ff";
-		context.fillRect(x+(20*minIdx),y,width,height[minIdx]);
-		context.fillStyle = "#FF0000";
-		await sleep(speedRange.value);
-		context.clearRect(x+(20*i),y,width,height[i]);
-		context.fillRect(x+(20*i),y,width,height[minIdx]);
 		temp = height[i];
 		height[i] = height[minIdx];
 		height[minIdx] = temp;
-		context.fillRect(x+(20*minIdx),y,width,height[minIdx]);
-		await sleep(speedRange.value);
+		Sort.data.datasets[0].data[i] = height[i];
+		Sort.data.datasets[0].data[minIdx] = height[minIdx];
+		Sort.data.datasets[0].backgroundColor[minIdx] = "#eb4034";
+		Sort.update();
 	}
 }
 
-async function insertionSort(){ // Just need to render
-	context.clearRect(0, 0, canvas.width, canvas.height);
+async function quickSort(height, left, right){
 	swaps = 0; compares = 0; x = 10;
-	const len = height.length;
-	console.log(height);
-	for (let i = 0; i < len; i++) {
-		let el = height[i]; let j;
-		for (j = i - 1; j >= 0 && height[j] < el; j--) {
-			context.clearRect(x+(20*(j+1)),y,width,-500);
-		  	height[j + 1] = height[j];	
-		  	context.fillRect(x+(20*(j+1)),y,width,height[j+1]);
-			document.getElementById("numOfSwaps").innerHTML = swaps += 1;	
-		}
-		context.fillRect(x+(20*j),y,width,height[j]);
-		height[j + 1] = el;
-		document.getElementById("numOfComp").innerHTML = compares += 1;
-	}
-	console.log(height);
-};
+   	var len = height.length, 
+   	pivot,
+   	partitionIndex;
+  	if(left < right){
+    	pivot = right;
+    	partitionIndex = partition(height, pivot, left, right);
+   		//sort left and right
+   		quickSort(height, left, partitionIndex - 1);
+   		quickSort(height, partitionIndex + 1, right);
+  	}
+  	return height;
+}
 
+async function partition(height, pivot, left, right){
+   var pivotValue = height[pivot],
+       partitionIndex = left;
+   console.log(height);
+   for(var i = left; i < right; i++){
+    if(height[i] > pivotValue){
+      	swap(height, i, partitionIndex);
+      	partitionIndex++;
+    }
+  }
+  swap(height, right, partitionIndex);
+  return partitionIndex;
+}
+
+async function swap(height, i, j){
+   	var temp = height[i];
+   	height[i] = height[j];
+   	height[j] = temp;
+}
 // Waits a select period of time
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -250,15 +312,15 @@ function sleep(ms) {
 $(document).ready(function(){
 	$("#RandomArray").click(function() {
 		randomArray = "True";
-		draw();
+		draw("");
 	});
 	$("#Array").click(function() {
 		randomArray = "False";
-		draw();
+		draw("");
 	});
 	// Sorting algorithms
 	$("#ArrayChange").change(function() {
-		draw();
+		draw("numberChange");
 	});
 	$("#BubbleSort").click(function(){
 		nullifier();
@@ -268,14 +330,8 @@ $(document).ready(function(){
 		nullifier();
 		selectionSort();
 	});
-	$("#InsertionSort").click(function(){
-		insertionSort();
-	});
-	$("#MergeSort").click(function(){
-		mergeSort();
-	});
 	$("#QuickSort").click(function(){
-		quickSort();
+		quickSort(height, 0, (height.length - 1));
 	});
 });
 </script>
