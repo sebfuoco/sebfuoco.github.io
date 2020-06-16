@@ -52,6 +52,10 @@
   border-radius: 0 !important;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
 .dropdown-menu.dropdown-menu-wide {
   min-width: 100%;
   text-align: center;
@@ -91,7 +95,7 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
 </nav>
 <!-- Body Container -->
 <div class="container-fluid bg-light">
-	<div class="row justify-content-center min-vh-100">
+	<div class="row justify-content-center">
 		<div class="col p-3 mb-2 text-dark text-center">
 			<h1 class="display-4">Sorting Visualiser</h1><div style="height: 1%;"></div><input type="range" min="5" max="50" value="30" class="slider" id="ArrayChange"><p>number of values: <span id="value"></span></p>
 			<input type="range" min="10" max="1000" value="100" class="slider" id="SpeedChange"><p>Speed(ms): <span id="speed"></span></p>
@@ -145,8 +149,8 @@ function nullifier(){
 }
 // fill array with random numbers so that array is unsorted
 function fillArray(){
-	var setHeight = [100, 90, 44, 58, 95, 40, 50, 10, 10, 54, 41, 19, 11,
- 	21, 91, 75, 82, 10, 10, 29, 24, 13, 30, 94, 71, 43, 11, 54, 75, 75,
+	var setHeight = [100, 90, 44, 58, 95, 40, 50, 1, 5, 54, 41, 19, 11,
+ 	21, 91, 75, 82, 2, 10, 29, 24, 13, 30, 94, 71, 43, 11, 54, 76, 75,
  	86, 14, 43, 22, 11, 23, 91, 95, 43, 31, 13, 97, 85, 42, 45, 56, 59,
  	91, 44, 22];
 	height = [];
@@ -285,6 +289,7 @@ async function selectionSort(){ // Done
 		Sort.data.datasets[0].data[minIdx] = height[minIdx];
 		Sort.data.datasets[0].backgroundColor[minIdx] = "#eb4034";
 		Sort.update();
+		document.getElementById("numOfSwaps").innerHTML = swaps += 1;
 	}
 }
 
@@ -312,7 +317,8 @@ async function insertionSort(height){
 	Sort.update();
 }
 
-function mergeSort(height) { // Bottom Up Merge sort
+async function mergeSort(height) { // Bottom Up Merge sort
+	console.log(height);
 	var sorted = height.slice(),
 		n = sorted.length,
 		buffer = new Array(n);
@@ -325,30 +331,54 @@ function mergeSort(height) { // Bottom Up Merge sort
 				i = left;
 			while (left < leftLimit && right < rightLimit) {
 				if (sorted[left] <= sorted[right]) {
-				  buffer[i++] = sorted[left++];
+					Sort.data.datasets[0].data[i] = sorted[left];
+					mergeSwap(i);
+					buffer[i++] = sorted[left++];
 				} else {
-				  buffer[i++] = sorted[right++];
-				}
+					Sort.data.datasets[0].data[i] = sorted[right];
+					mergeSwap(i);
+					buffer[i++] = sorted[right++];
+				}	
+				document.getElementById("numOfSwaps").innerHTML = swaps += 1;
+				document.getElementById("numOfComp").innerHTML = compares += 1;
 			}
 			while (left < leftLimit) {
-			  buffer[i++] = sorted[left++];
+				Sort.data.datasets[0].data[i] = sorted[left];
+				Sort.update();
+				await sleep(speedRange.value);
+				buffer[i++] = sorted[left++];
+				document.getElementById("numOfComp").innerHTML = compares += 1;
 			}
 			while (right < rightLimit) {
-			  buffer[i++] = sorted[right++];
+				Sort.data.datasets[0].data[i] = sorted[right];
+				Sort.update();
+				await sleep(speedRange.value);
+				buffer[i++] = sorted[right++];
+				document.getElementById("numOfComp").innerHTML = compares += 1;
 			}
 		}
-	var temp = sorted,
-		sorted = buffer,
-		buffer = temp;}
-	return sorted;
+		var temp = sorted,
+			sorted = buffer,
+			buffer = temp;
+	}
+	console.log(sorted);
+}
+
+async function mergeSwap(i){
+	Sort.data.datasets[0].backgroundColor[i] = "blue";
+	Sort.data.datasets[0].backgroundColor[i + 1] = "green";
+	Sort.update();
+	await sleep(speedRange.value);
+	Sort.data.datasets[0].backgroundColor[i] = "#eb4034";
+	Sort.data.datasets[0].backgroundColor[i+ 1] = "#eb4034";
 }
 
 async function quickSort(height, left, right){ 
    	var len = height.length, 
    	pivot,
    	partitionIndex;
+   	document.getElementById("numOfComp").innerHTML = compares += 1;
   	if(left < right){
-  		document.getElementById("numOfComp").innerHTML = compares += 1;
     	pivot = right;
     	partitionIndex = await partition(height, pivot, left, right);
    		//sort left and right
