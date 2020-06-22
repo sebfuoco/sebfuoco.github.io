@@ -213,6 +213,10 @@ if (!localStorage.getItem('SubjectData')) {
   value = [230, 20];
   localStorage.setItem("Computers", JSON.stringify(value));
   var ComputersData = JSON.parse(localStorage.getItem("Computers"));
+  // Store Subject Labels
+  let ItemLabels = [];
+  ItemLabels.push("Chairs", "Tables", "Printers", "Notice Boards", "Mice", "Keyboards", "Monitors");
+  localStorage.setItem("ItemLabels", JSON.stringify(ItemLabels));
   // Store In-Use Items
   value = [400, 200, 20, 50, 250, 250, 250];
   localStorage.setItem("UseItem", JSON.stringify(value));
@@ -221,21 +225,38 @@ if (!localStorage.getItem('SubjectData')) {
   value = [100, 50, 5, 5, 50, 50, 50];
   localStorage.setItem("FreeItem", JSON.stringify(value));
   var FreeItem = JSON.parse(localStorage.getItem("FreeItem"));
+  // Venue Label
+  let VenueLabels = [];
+  VenueLabels.push("Classrooms", "Labs", "Offices");
+  localStorage.setItem("ItemLabels", JSON.stringify(VenueLabels));
   // Store Venue
   value = [100, 20, 60];
   localStorage.setItem("Venue", JSON.stringify(value));
   var VenueData = JSON.parse(localStorage.getItem("Venue"));
   // Store Teachers
-  var dataSet = [
-  ['Bob Dillion','Art'],
-  ['Carol Robinson', 'Maths'],
-  ['James Matthews','Business'],
-  ['Karen Smith', 'Music'],
-  ['Steve Williams', 'IT']
-  ];
-  localStorage.setItem("Teachers", JSON.stringify(dataSet));
-  var TeacherData = JSON.parse(localStorage.getItem("Teachers"));
-}
+  let Teachers = [];
+  Teachers.push(
+    'Bob Dillion',
+    'Carol Robinson',
+    'James Matthews',
+    'Karen Smith',
+    'Steve Williams'
+  );
+  localStorage.setItem("Teachers", JSON.stringify(Teachers));
+  let TeacherEducation = [];
+  TeacherEducation.push(
+    'Art',
+    'Maths',
+    'Business',
+    'Music',
+    'IT'
+  );
+  let TeachersData = [];
+  for (var i = 0; i < TeacherEducation.length; i++){
+    TeachersData.push([Teachers[i],TeacherEducation[i]]);
+  }
+  localStorage.setItem("TeachersData", JSON.stringify(TeachersData));
+} 
 
 function openModal(number, option){
   $("#firstBox").remove();
@@ -261,21 +282,21 @@ function openModal(number, option){
       dropdownToText(3);
       break;
     case number == 3 && option == "Edit":
-      var dropdownContent = [["In-Use", "Available"],["Chairs", "Tables", "Printers", "Notice Boards", "Mice", "Keyboards", "Monitors"]];
+      var dropdownContent = [["In-Use", "Available"],JSON.parse(localStorage.getItem("ItemLabels"))];
       dropdownLoop(dropdownContent, 3);
       break;
     case number == 4 && option == "Add":
       dropdownToText(4);
       break;
     case number == 4 && option == "Edit":
-      var dropdownContent = [["Classroom", "Lab", "Office"]];
+      var dropdownContent = [JSON.parse(localStorage.getItem("VenueLabels"))];
       dropdownLoop(dropdownContent, 4);
       break;
     case number == 5 && option == "Add":
       dropdownToText(5);
       break;
     case number == 5 && option == "Edit":
-      var dropdownContent = [["Bob Dillion", "Carol Robinson", "James Matthews", "Karen Smith", "Steve Williams"]];
+      var dropdownContent = [JSON.parse(localStorage.getItem("Teachers"))];
       dropdownLoop(dropdownContent, 5);
       break;
   }
@@ -380,7 +401,7 @@ function dropdownLoop(dropdownContent, number){ // Edit
 }
 // Table
 var myTable = $('#dataTable').DataTable({
-  data:JSON.parse(localStorage.getItem("Teachers")),
+  data: JSON.parse(localStorage.getItem("TeachersData")),
   columns: [
     {"title": "Teachers Name" },
     {"title": "Education Background" } 
@@ -469,7 +490,7 @@ var ctx = document.getElementById("Items");
 var Items = new Chart(ctx, {
   type: 'bar',
   data: {
-  labels: ["Chairs", "Tables", "Printers","Notice Boards", "Mice", "Keyboards", "Monitors"],
+  labels: JSON.parse(localStorage.getItem("ItemLabels")),
   datasets: [{
     label: 'In-Use',
     backgroundColor: colours,
@@ -515,7 +536,7 @@ var ctx = document.getElementById('Venues').getContext('2d');
 var Venues = new Chart(ctx, {
     type: 'horizontalBar',
     data: {
-        labels: ['Classrooms', 'Labs', 'Offices'],
+        labels: JSON.parse(localStorage.getItem("VenueLabels")),
         datasets: [{
             label: 'Quantity',
             data: JSON.parse(localStorage.getItem("Venue")),
@@ -582,8 +603,6 @@ function editData(firstBox, secondBox, btnValue){
       SubjectData[firstBox] = message;
       localStorage.setItem("SubjectData", JSON.stringify(SubjectData));
       Students.update();
-      break;
-    case btnValue == "Computers" && status == "Add":
       break;
     case btnValue == "Computers" && status == "Edit":
       Computers.data.datasets[0].data[firstBox] = message;
