@@ -14,7 +14,7 @@
   <title>Dashboard</title>
   <meta name="google-site-verification" content="57ojS5ZUvzfapLNXZ3loOraMw3dSHtMuVi8pMCyi410" /> <!-- Google Search Console -->
   <!-- Custom fonts for this template-->
-  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+  <link rel="stylesheet preload" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
   <!-- Custom styles for this template-->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/3.3.7+1/css/sb-admin-2.css" rel="stylesheet preload">
   <link rel="stylesheet preload" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -50,6 +50,7 @@
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" onclick="openModal(1, 'Add')" data-toggle="modal" data-target="#Modal">Add</a>
                 <a class="dropdown-item" href="#" onclick="openModal(1, 'Edit')" data-toggle="modal" data-target="#Modal">Edit</a>
+                <a class="dropdown-item" href="#" onclick="openModal(1, 'Delete')" data-toggle="modal" data-target="#Modal">Delete</a>
               </div>
             </div>
           </div>
@@ -105,6 +106,7 @@
                  <div class="dropdown-divider"></div>
                  <a class="dropdown-item" href="#" onclick="openModal(3, 'Add')" data-toggle="modal" data-target="#Modal">Add</a>
                 <a class="dropdown-item" href="#" onclick="openModal(3, 'Edit')" data-toggle="modal" data-target="#Modal">Edit</a>
+                <a class="dropdown-item" href="#" onclick="openModal(3, 'Delete')" data-toggle="modal" data-target="#Modal">Delete</a>
               </div>
             </div>
           </div>
@@ -129,6 +131,7 @@
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#" onclick="openModal(4, 'Add')" data-toggle="modal" data-target="#Modal">Add</a>
               <a class="dropdown-item" href="#" onclick="openModal(4, 'Edit')" data-toggle="modal" data-target="#Modal">Edit</a>
+              <a class="dropdown-item" href="#" onclick="openModal(4, 'Delete')" data-toggle="modal" data-target="#Modal">Delete</a>
             </div>
           </div>
         </div>
@@ -152,6 +155,7 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#" onclick="openModal(5, 'Add')" data-toggle="modal" data-target="#Modal">Add</a>
                   <a class="dropdown-item" href="#" onclick="openModal(5, 'Edit')" data-toggle="modal" data-target="#Modal">Edit</a>
+                  <a class="dropdown-item" href="#" onclick="openModal(5, 'Delete')" data-toggle="modal" data-target="#Modal">Delete</a>
                 </div>
             </div>
           </div>
@@ -182,7 +186,7 @@
             </div>
           </form>
         <div class="modal-footer">
-          <a class="btn btn-primary" href="#" id="submitBtn" onclick="editData(firstBox.value, secondBox.value, submitBtn.value)" data-dismiss="modal">Submit</a>
+          <a class="btn btn-primary" href="#" id="submitBtn" onclick="editData(submitBtn.value)" data-dismiss="modal">Submit</a>
         </div>
       </div>
     </div>
@@ -200,7 +204,7 @@
 var status;
 var colours = ['#4e73df', '#1cc88a', '#36b9cc', '#eb4034', '#ffce56', '#9966ff', '#d99b00','#f04dea'];
 // Local Storage
-
+if (!localStorage.getItem('SubjectData')) {
   // Store Subject Labels
   let SubjectLabel = [];
   SubjectLabel.push("Art", "Business", "IT", "Music", "Maths");
@@ -248,7 +252,7 @@ var colours = ['#4e73df', '#1cc88a', '#36b9cc', '#eb4034', '#ffce56', '#9966ff',
   );
   localStorage.setItem("TeacherEducation", JSON.stringify(TeacherEducation));
   processTeachers(Teachers, TeacherEducation);
-
+}
 
 function processTeachers(Teachers, TeacherEducation) {
   let TeachersData = [];
@@ -257,12 +261,11 @@ function processTeachers(Teachers, TeacherEducation) {
   }
   localStorage.setItem("TeachersData", JSON.stringify(TeachersData));
 }
-
 function openModal(number, option){
   $("#firstBox").remove();
-  $("#textboxLabel1").remove();
+  $("#boxLabel1").remove();
   $("#secondBox").remove();
-  $("#textboxLabel2").remove();
+  $("#boxLabel2").remove();
   $("#thirdBox").remove();
   $("#boxLabel3").remove();
   switch(true){
@@ -271,32 +274,51 @@ function openModal(number, option){
       break;
     case number == 1 && option == "Edit":
       var dropdownContent = [JSON.parse(localStorage.getItem("SubjectLabel"))];
-      dropdownLoop(dropdownContent, 1);
+      dropdownLoop(dropdownContent, 1, "Edit");
       break;
+    case number == 1 && option == "Delete":
+      var dropdownContent = [JSON.parse(localStorage.getItem("SubjectLabel"))];
+      dropdownLoop(dropdownContent, 1, "Delete");
+      break;  
     case number == 2 && option == "Edit":
       var dropdownContent = [["Operational", "Faulty"]];
-      dropdownLoop(dropdownContent, 2);
+      dropdownLoop(dropdownContent, 2, "Edit");
       break;
     case number == 3 && option == "Add":
       dropdownToText(3);
       break;
     case number == 3 && option == "Edit":
       var dropdownContent = [["In-Use", "Available"],JSON.parse(localStorage.getItem("ItemLabels"))];
-      dropdownLoop(dropdownContent, 3);
+      dropdownLoop(dropdownContent, 3, "Edit");
+      break;
+    case number == 3 && option == "Delete":
+      var dropdownContent = [JSON.parse(localStorage.getItem("ItemLabels"))];
+      dropdownLoop(dropdownContent, 3, "Delete");
       break;
     case number == 4 && option == "Add":
       dropdownToText(4);
       break;
     case number == 4 && option == "Edit":
       var dropdownContent = [JSON.parse(localStorage.getItem("VenueLabels"))];
-      dropdownLoop(dropdownContent, 4);
+      dropdownLoop(dropdownContent, 4, "Edit");
+      break;
+    case number == 4 && option == "Delete":
+      var dropdownContent = [JSON.parse(localStorage.getItem("VenueLabels"))];
+      dropdownLoop(dropdownContent, 4, "Delete");
       break;
     case number == 5 && option == "Add":
       dropdownToText(5);
       break;
     case number == 5 && option == "Edit":
       var dropdownContent = [JSON.parse(localStorage.getItem("Teachers"))];
-      dropdownLoop(dropdownContent, 5);
+      dropdownLoop(dropdownContent, 5, "Edit");
+      break;
+    case number == 5 && option == "Delete":
+      var dropdownContent = [JSON.parse(localStorage.getItem("Teachers"))];
+      dropdownLoop(dropdownContent, 5, "Delete");
+      break;
+    default:
+      alert("Something went wrong");
       break;
   }
 }
@@ -310,82 +332,106 @@ function dropdownToText(number){ // Add
   var boxLabel2 = "<label class='col-form-label' id='boxLabel2'></label>";
   var boxLabel3 = "<label class='col-form-label' id='boxLabel3'></label>";
   document.getElementById("ModalLabel").innerHTML = "Add data";
-  if(!$("#textbox1").length){
     $("#firstTextContainer").append(boxLabel1);
     $("#firstTextContainer").append(firstBox);
     $("#secondTextContainer").append(boxLabel2);
     $("#secondTextContainer").append(secondBox);
-  }
-  if (number == 1) {
-    document.getElementById("boxLabel1").innerHTML = "Add Subject:";
-    document.getElementById("boxLabel2").innerHTML = "Quantity:";
-    document.getElementById("submitBtn").value = "Students";
-    $("#secondText").remove();
-  }
-  else if (number == 3) {
-    $("#thirdTextContainer").append(boxLabel3);
-    $("#thirdTextContainer").append(thirdBox);
-    document.getElementById("boxLabel1").innerHTML = "Add Item:";
-    document.getElementById("boxLabel2").innerHTML = "Available Quantity:";
-    document.getElementById("boxLabel3").innerHTML = "In-Use Quantity:";
-    document.getElementById("submitBtn").value = "Items";
-  }
-  else if (number == 4){
-    document.getElementById("boxLabel1").innerHTML = "Add Venue:";
-    document.getElementById("boxLabel2").innerHTML = "Quantity:";
-    document.getElementById("submitBtn").value = "Venues";
-    $("#secondText").remove();
-  }
-  else if(number == 5){
-    document.getElementById("boxLabel1").innerHTML = "Add Teacher Name:";
-    document.getElementById("boxLabel2").innerHTML = "Education Background:";
-    document.getElementById("submitBtn").value = "Teachers";
+  switch(number){
+    case number == 1:
+      document.getElementById("boxLabel1").innerHTML = "Add Subject:";
+      document.getElementById("boxLabel2").innerHTML = "Quantity:";
+      document.getElementById("submitBtn").value = "Students";
+      $("#secondText").remove();
+      break;
+    case number == 3:
+      $("#thirdTextContainer").append(boxLabel3);
+      $("#thirdTextContainer").append(thirdBox);
+      document.getElementById("boxLabel1").innerHTML = "Add Item:";
+      document.getElementById("boxLabel2").innerHTML = "Available Quantity:";
+      document.getElementById("boxLabel3").innerHTML = "In-Use Quantity:";
+      document.getElementById("submitBtn").value = "Items";
+      break;
+    case number == 4:
+      document.getElementById("boxLabel1").innerHTML = "Add Venue:";
+      document.getElementById("boxLabel2").innerHTML = "Quantity:";
+      document.getElementById("submitBtn").value = "Venues";
+      $("#secondText").remove();
+      break;
+    case number == 5:
+      document.getElementById("boxLabel1").innerHTML = "Add Teacher Name:";
+      document.getElementById("boxLabel2").innerHTML = "Education Background:";
+      document.getElementById("submitBtn").value = "Teachers";
+      break;
+    default:
+      alert("Something went wrong");
+      break;
   }
 }
 
-function dropdownLoop(dropdownContent, number){ // Edit
-  var k = 1; status = "Edit";
+function dropdownLoop(dropdownContent, number, status1){ // Edit + Delete
+  var k = 1; status = status1;
   var firstBox = "<select class='custom-select' id='firstBox'></select>";
   var secondBox = number != 3 ? "<input class='form-control' id='secondBox' type='textbox'/>" : "<select class='custom-select' id='secondBox'></select>";
   var thirdBox = "<input class='form-control' id='thirdBox' type='textbox'/>";
   var boxLabel1 = "<label class='col-form-label' id='boxLabel1'></label>";
   var boxLabel2 = "<label class='col-form-label' id='boxLabel2'></label>";
   var boxLabel3 = "<label class='col-form-label' id='boxLabel3'></label>";
-  document.getElementById("ModalLabel").innerHTML = "Edit data";
-  if(!$("#textbox1").length){
-    $("#firstTextContainer").append(boxLabel1);
-    $("#firstTextContainer").append(firstBox);
+  $("#firstTextContainer").append(boxLabel1);
+  $("#firstTextContainer").append(firstBox);
+  if(status == "Edit"){
     $("#secondTextContainer").append(boxLabel2);
     $("#secondTextContainer").append(secondBox);
   }
-  if (number == 1){
-    document.getElementById("boxLabel1").innerHTML = "Choose Subject:";
-    document.getElementById("boxLabel2").innerHTML = "Quantity:";
-    document.getElementById("submitBtn").value = "Students";
-  }
-  else if (number == 2){
-    document.getElementById("boxLabel1").innerHTML = "Choose Computer Status:";
-    document.getElementById("boxLabel2").innerHTML = "Quantity:";
-    document.getElementById("submitBtn").value = "Computers";
-  }
-  else if (number == 3){
-    k = 2;
-    $("#thirdTextContainer").append(boxLabel3);
-    $("#thirdTextContainer").append(thirdBox);
-    document.getElementById("boxLabel1").innerHTML = "Choose Availabilty:";
-    document.getElementById("boxLabel2").innerHTML = "Choose Items:";
-    document.getElementById("boxLabel3").innerHTML = "Quantity:";
-    document.getElementById("submitBtn").value = "Items";
-  }
-  else if (number == 4){
-    document.getElementById("boxLabel1").innerHTML = "Choose Venue:";
-    document.getElementById("boxLabel2").innerHTML = "Quantity:";
-    document.getElementById("submitBtn").value = "Venues";
-  }
-  else if (number == 5){
-    document.getElementById("boxLabel1").innerHTML = "Choose Teacher:";
-    document.getElementById("boxLabel2").innerHTML = "Education Background:";
-    document.getElementById("submitBtn").value = "Teachers";
+  status != "Delete" ? document.getElementById("ModalLabel").innerHTML = "Edit data" : document.getElementById("ModalLabel").innerHTML = "Delete data";
+  switch(true){
+    case number == 1 && status == "Edit":
+      document.getElementById("boxLabel1").innerHTML = "Choose Subject:";
+      document.getElementById("boxLabel2").innerHTML = "Quantity:";
+      document.getElementById("submitBtn").value = "Students";
+      break;
+    case number == 1 && status == "Delete":
+      document.getElementById("boxLabel1").innerHTML = "Choose Subject:";
+      document.getElementById("submitBtn").value = "Students";
+      break;
+    case number == 2 && status == "Edit":
+      document.getElementById("boxLabel1").innerHTML = "Choose Computer Status:";
+      document.getElementById("boxLabel2").innerHTML = "Quantity:";
+      document.getElementById("submitBtn").value = "Computers";
+      break;
+    case number == 3 && status == "Edit":
+      k = 2;
+      $("#thirdTextContainer").append(boxLabel3);
+      $("#thirdTextContainer").append(thirdBox);
+      document.getElementById("boxLabel1").innerHTML = "Choose Availabilty:";
+      document.getElementById("boxLabel2").innerHTML = "Choose Item:";
+      document.getElementById("boxLabel3").innerHTML = "Quantity:";
+      document.getElementById("submitBtn").value = "Items";
+      break;
+    case number == 3 && status == "Delete":
+      document.getElementById("boxLabel1").innerHTML = "Choose Item:";
+      document.getElementById("submitBtn").value = "Items";
+      break;
+    case number == 4 && status == "Edit":
+      document.getElementById("boxLabel1").innerHTML = "Choose Venue:";
+      document.getElementById("boxLabel2").innerHTML = "Quantity:";
+      document.getElementById("submitBtn").value = "Venues";
+      break;
+    case number == 4 && status == "Delete":
+      document.getElementById("boxLabel1").innerHTML = "Choose Venue:";
+      document.getElementById("submitBtn").value = "Venues";
+      break;
+    case number == 5 && status == "Edit":
+      document.getElementById("boxLabel1").innerHTML = "Choose Teacher:";
+      document.getElementById("boxLabel2").innerHTML = "Education Background:";
+      document.getElementById("submitBtn").value = "Teachers";
+      break;
+    case number == 5 && status == "Delete":
+      document.getElementById("boxLabel1").innerHTML = "Choose Teacher:";
+      document.getElementById("submitBtn").value = "Teachers";
+      break;
+    default:
+      alert("Something went wrong.");
+      break;
   }
   firstBox = document.getElementById('firstBox');
   secondBox = document.getElementById('secondBox');
@@ -489,16 +535,16 @@ var ctx = document.getElementById("Items");
 var Items = new Chart(ctx, {
   type: 'bar',
   data: {
-  labels: JSON.parse(localStorage.getItem("ItemLabels")),
-  datasets: [{
-    label: 'In-Use',
-    backgroundColor: colours,
-    data: JSON.parse(localStorage.getItem("UseItem"))
-    },
-    {
-      label: 'Available',
-      backgroundColor: colours.slice().reverse(),
-      data: JSON.parse(localStorage.getItem("FreeItem"))
+    labels: JSON.parse(localStorage.getItem("ItemLabels")),
+    datasets: [{
+      label: 'In-Use',
+      backgroundColor: colours,
+      data: JSON.parse(localStorage.getItem("UseItem"))
+      },
+      {
+        label: 'Available',
+        backgroundColor: colours.slice().reverse(),
+        data: JSON.parse(localStorage.getItem("FreeItem"))
     }],
   },
   options: {
@@ -579,9 +625,10 @@ var Venues = new Chart(ctx, {
     }
 });
 // Edit data
-function editData(firstBox, secondBox, btnValue){
+function editData(btnValue){
+  var firstBox = (document.getElementById("firstBox").value);
+  var secondBox = (document.getElementById("secondBox") == null) ? "" : document.getElementById("secondBox").value; 
   //$("#firstBox option:selected").text() // Dropdown
-  var message = secondBox;
   switch(true){
     case btnValue == "Students" && status == "Add":
       if (JSON.parse(localStorage.getItem("SubjectLabel")).length < 8){
@@ -600,16 +647,27 @@ function editData(firstBox, secondBox, btnValue){
       }
       break;
     case btnValue == "Students" && status == "Edit":
-      Students.data.datasets[0].data[firstBox] = message; 
+      Students.data.datasets[0].data[firstBox] = secondBox; 
       var SubjectData = JSON.parse(localStorage.getItem("SubjectData"));
-      SubjectData[firstBox] = message;
+      SubjectData[firstBox] = secondBox;
       localStorage.setItem("SubjectData", JSON.stringify(SubjectData));
       Students.update();
       break;
+    case btnValue == "Students" && status == "Delete":
+      Students.data.datasets[0].data.splice(firstBox, 1);
+      Students.data.labels.splice(firstBox, 1);
+      console.log(Students.data.datasets[0].data);
+      console.log(Students.data.labels);
+      var SubjectData = Students.data.datasets[0].data;
+      var SubjectLabel = Students.data.labels;
+      localStorage.setItem("SubjectData", JSON.stringify(SubjectData));
+      localStorage.setItem("SubjectLabel", JSON.stringify(SubjectLabel));
+      Students.update();
+      break;
     case btnValue == "Computers" && status == "Edit":
-      Computers.data.datasets[0].data[firstBox] = message;
+      Computers.data.datasets[0].data[firstBox] = secondBox;
       var ComputersData = JSON.parse(localStorage.getItem("Computers"));
-      ComputersData[firstBox] = message;
+      ComputersData[firstBox] = secondBox;
       localStorage.setItem("Computers", JSON.stringify(ComputersData));
       Computers.update();
       break;
@@ -634,7 +692,7 @@ function editData(firstBox, secondBox, btnValue){
       }
       break;
     case btnValue == "Items" && status == "Edit":
-      message = thirdBox.value;
+      var message = (document.getElementById("thirdBox").value);
       Items.data.datasets[firstBox].data[secondBox] = message;
       if(firstBox == 0){
         let InUseItem = JSON.parse(localStorage.getItem("UseItem"));
@@ -646,6 +704,18 @@ function editData(firstBox, secondBox, btnValue){
         FreeItem[firstBox] = message;
         localStorage.setItem("FreeItem", JSON.stringify(FreeItem));
       }
+      Items.update();
+      break;
+    case btnValue == "Items" && status == "Delete":
+      Items.data.labels.splice(firstBox, 1);
+      Items.data.datasets[0].data.splice(firstBox, 1);
+      Items.data.datasets[1].data.splice(firstBox, 1);
+      var ItemLabels = Items.data.labels;
+      var FreeItem = Items.data.datasets[0].data;
+      var UseItem = Items.data.datasets[0].data;
+      localStorage.setItem("ItemLabels", JSON.stringify(ItemLabels));
+      localStorage.setItem("FreeItem", JSON.stringify(FreeItem));
+      localStorage.setItem("UseItem", JSON.stringify(UseItem));
       Items.update();
       break;
     case btnValue == "Venues" && status == "Add":
@@ -665,10 +735,19 @@ function editData(firstBox, secondBox, btnValue){
       }
       break;
     case btnValue == "Venues" && status == "Edit":
-      Venues.data.datasets[0].data[firstBox] = message;
+      Venues.data.datasets[0].data[firstBox] = secondBox;
       let VenueData = JSON.parse(localStorage.getItem("VenueData"));
-      VenueData[firstBox] = message;
+      VenueData[firstBox] = secondBox;
       localStorage.setItem("Venue", JSON.stringify(VenueData));
+      Venues.update();
+      break;
+    case btnValue == "Venues" && status == "Delete":
+      Venues.data.labels.splice(firstBox, 1);
+      Venues.data.datasets[0].data.splice(firstBox, 1);
+      var VenueLabels = Venues.data.labels;
+      var Venue = Venues.data.datasets[0].data;
+      localStorage.setItem("VenueLabels", JSON.stringify(VenueLabels));
+      localStorage.setItem("Venue", JSON.stringify(Venue));
       Venues.update();
       break;
     case btnValue == "Teachers" && status == "Add":
@@ -679,16 +758,28 @@ function editData(firstBox, secondBox, btnValue){
       localStorage.setItem("Teachers", JSON.stringify(Teachers));
       localStorage.setItem("TeacherEducation", JSON.stringify(TeacherEducation));
       processTeachers(Teachers, TeacherEducation);
+      myTable.row.add([document.getElementById("firstBox").value, message]).draw( false );
       break;
     case btnValue == "Teachers" && status == "Edit":
       var Teachers = JSON.parse(localStorage.getItem("Teachers"));
       var TeacherEducation = JSON.parse(localStorage.getItem("TeacherEducation"));
-      TeacherEducation[firstBox] = document.getElementById("secondBox").value;
+      TeacherEducation[firstBox] = secondBox;
       localStorage.setItem("TeacherEducation", JSON.stringify(TeacherEducation));
       processTeachers(Teachers, TeacherEducation);
-      myTable.cell(firstBox, 1).data(message);
+      myTable.cell(firstBox, 1).data(secondBox);
+      break;
+    case btnValue == "Teachers" && status == "Delete":
+      var Teachers = JSON.parse(localStorage.getItem("Teachers"));
+      var TeacherEducation = JSON.parse(localStorage.getItem("TeacherEducation"));;
+      Teachers.splice(firstBox, 1);
+      TeacherEducation.splice(secondBox, 1);
+      localStorage.setItem("Teachers", JSON.stringify(Teachers));
+      localStorage.setItem("TeacherEducation", JSON.stringify(TeacherEducation));
+      processTeachers(Teachers, TeacherEducation);
+      myTable.row(firstBox).remove().draw( false );
       break;
     default:
+      alert("Something went wrong.");
       break;
   }
 }
