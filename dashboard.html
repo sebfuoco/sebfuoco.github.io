@@ -332,18 +332,18 @@ function dropdownToText(number){ // Add
   var boxLabel2 = "<label class='col-form-label' id='boxLabel2'></label>";
   var boxLabel3 = "<label class='col-form-label' id='boxLabel3'></label>";
   document.getElementById("ModalLabel").innerHTML = "Add data";
-    $("#firstTextContainer").append(boxLabel1);
-    $("#firstTextContainer").append(firstBox);
-    $("#secondTextContainer").append(boxLabel2);
-    $("#secondTextContainer").append(secondBox);
+  $("#firstTextContainer").append(boxLabel1);
+  $("#firstTextContainer").append(firstBox);
+  $("#secondTextContainer").append(boxLabel2);
+  $("#secondTextContainer").append(secondBox);
   switch(number){
-    case number == 1:
+    case 1:
       document.getElementById("boxLabel1").innerHTML = "Add Subject:";
       document.getElementById("boxLabel2").innerHTML = "Quantity:";
       document.getElementById("submitBtn").value = "Students";
       $("#secondText").remove();
       break;
-    case number == 3:
+    case 3:
       $("#thirdTextContainer").append(boxLabel3);
       $("#thirdTextContainer").append(thirdBox);
       document.getElementById("boxLabel1").innerHTML = "Add Item:";
@@ -351,13 +351,13 @@ function dropdownToText(number){ // Add
       document.getElementById("boxLabel3").innerHTML = "In-Use Quantity:";
       document.getElementById("submitBtn").value = "Items";
       break;
-    case number == 4:
+    case 4:
       document.getElementById("boxLabel1").innerHTML = "Add Venue:";
       document.getElementById("boxLabel2").innerHTML = "Quantity:";
       document.getElementById("submitBtn").value = "Venues";
       $("#secondText").remove();
       break;
-    case number == 5:
+    case 5:
       document.getElementById("boxLabel1").innerHTML = "Add Teacher Name:";
       document.getElementById("boxLabel2").innerHTML = "Education Background:";
       document.getElementById("submitBtn").value = "Teachers";
@@ -656,8 +656,6 @@ function editData(btnValue){
     case btnValue == "Students" && status == "Delete":
       Students.data.datasets[0].data.splice(firstBox, 1);
       Students.data.labels.splice(firstBox, 1);
-      console.log(Students.data.datasets[0].data);
-      console.log(Students.data.labels);
       var SubjectData = Students.data.datasets[0].data;
       var SubjectLabel = Students.data.labels;
       localStorage.setItem("SubjectData", JSON.stringify(SubjectData));
