@@ -263,10 +263,10 @@ function processTeachers(Teachers, TeacherEducation) {
 }
 function openModal(number, option){
   $("#firstBox").remove();
-  $("#boxLabel1").remove();
   $("#secondBox").remove();
-  $("#boxLabel2").remove();
   $("#thirdBox").remove();
+  $("#boxLabel1").remove();
+  $("#boxLabel2").remove();
   $("#boxLabel3").remove();
   switch(true){
     case number == 1 && option == "Add":
@@ -624,162 +624,192 @@ var Venues = new Chart(ctx, {
         }
     }
 });
+
+function checkText(btnValue){
+  let firstBox = (document.getElementById("firstBox").value == "") ? (alert("First textbox must not be empty"), false) : document.getElementById("firstBox").value;
+  let secondBox; let thirdBox;
+  if (document.getElementById("secondBox") != null) {
+    secondBox = (document.getElementById("secondBox").value == "") ? (alert("Second textbox must not be empty"), false) : document.getElementById("secondBox").value;
+    if (!(btnValue == "Items" && status == "Edit") | !(status == "Delete")){ 
+      if (btnValue != "Teachers"){
+        secondBox = isNaN(secondBox) ? (alert("Second Textbox must be a number."), false) : secondBox;
+      } 
+    }
+  } else {
+    secondBox = true;
+  }
+  if (btnValue == "Items" && status != "Delete"){
+    thirdBox = (document.getElementById("thirdBox").value == "") ? (alert("Third textbox must not be empty"), false) : document.getElementById("thirdBox").value;
+    thirdBox = isNaN(thirdBox) ? (alert("Third Textbox must be a number."), false) : thirdBox;
+  }
+  return {
+    firstBox: firstBox,
+    secondBox: secondBox,
+    thirdBox: thirdBox,
+  };
+}
+
 // Edit data
 function editData(btnValue){
-  var firstBox = (document.getElementById("firstBox").value);
-  var secondBox = (document.getElementById("secondBox") == null) ? "" : document.getElementById("secondBox").value; 
+  let {firstBox, secondBox, thirdBox} = checkText(btnValue);
   //$("#firstBox option:selected").text() // Dropdown
-  switch(true){
-    case btnValue == "Students" && status == "Add":
-      if (JSON.parse(localStorage.getItem("SubjectLabel")).length < 8){
-        let SubjectLabel = JSON.parse(localStorage.getItem("SubjectLabel"));
-        let SubjectData = JSON.parse(localStorage.getItem("SubjectData"));
-        SubjectLabel.push(document.getElementById("firstBox").value);
-        SubjectData.push(document.getElementById("secondBox").value);
-        localStorage.setItem("SubjectLabel", JSON.stringify(SubjectLabel));
-        localStorage.setItem("SubjectData", JSON.stringify(SubjectData));
-        // Chart data needs to reset
-        Students.data.labels = JSON.parse(localStorage.getItem("SubjectLabel"));
-        Students.data.datasets[0].data = JSON.parse(localStorage.getItem("SubjectData"));
-        Students.update();
-      } else {
-        alert("Cannot have more than 8 items on one chart.");
+  if (firstBox || secondBox !== false){
+      switch(true){
+        case btnValue == "Students" && status == "Add":
+          if (JSON.parse(localStorage.getItem("SubjectLabel")).length < 8){
+            let SubjectLabel = JSON.parse(localStorage.getItem("SubjectLabel"));
+            let SubjectData = JSON.parse(localStorage.getItem("SubjectData"));
+            SubjectLabel.push(document.getElementById("firstBox").value);
+            SubjectData.push(document.getElementById("secondBox").value);
+            localStorage.setItem("SubjectLabel", JSON.stringify(SubjectLabel));
+            localStorage.setItem("SubjectData", JSON.stringify(SubjectData));
+            // Chart data needs to reset
+            Students.data.labels = JSON.parse(localStorage.getItem("SubjectLabel"));
+            Students.data.datasets[0].data = JSON.parse(localStorage.getItem("SubjectData"));
+            Students.update();
+          } else {
+            alert("Cannot have more than 8 items on one chart.");
+          }
+          break;
+        case btnValue == "Students" && status == "Edit":
+          Students.data.datasets[0].data[firstBox] = secondBox; 
+          var SubjectData = JSON.parse(localStorage.getItem("SubjectData"));
+          SubjectData[firstBox] = secondBox;
+          localStorage.setItem("SubjectData", JSON.stringify(SubjectData));
+          Students.update();
+          break;
+        case btnValue == "Students" && status == "Delete":
+          Students.data.datasets[0].data.splice(firstBox, 1);
+          Students.data.labels.splice(firstBox, 1);
+          var SubjectData = Students.data.datasets[0].data;
+          var SubjectLabel = Students.data.labels;
+          localStorage.setItem("SubjectData", JSON.stringify(SubjectData));
+          localStorage.setItem("SubjectLabel", JSON.stringify(SubjectLabel));
+          Students.update();
+          break;
+        case btnValue == "Computers" && status == "Edit":
+          Computers.data.datasets[0].data[firstBox] = secondBox;
+          var ComputersData = JSON.parse(localStorage.getItem("Computers"));
+          ComputersData[firstBox] = secondBox;
+          localStorage.setItem("Computers", JSON.stringify(ComputersData));
+          Computers.update();
+          break;
+        case btnValue == "Items" && status == "Add":
+          if(thirdBox != false){
+            if (JSON.parse(localStorage.getItem("ItemLabels")).length < 8){
+              let ItemLabels = JSON.parse(localStorage.getItem("ItemLabels"));
+              let UseItem = JSON.parse(localStorage.getItem("UseItem"));
+              let FreeItem = JSON.parse(localStorage.getItem("FreeItem"));
+              ItemLabels.push(document.getElementById("firstBox").value);
+              UseItem.push(document.getElementById("secondBox").value);
+              FreeItem.push(document.getElementById("thirdBox").value);
+              localStorage.setItem("ItemLabels", JSON.stringify(ItemLabels));
+              localStorage.setItem("UseItem", JSON.stringify(UseItem));
+              localStorage.setItem("FreeItem", JSON.stringify(FreeItem));
+              // Chart data needs to reset
+              Items.data.labels = JSON.parse(localStorage.getItem("ItemLabels"));
+              Items.data.datasets[0].data = JSON.parse(localStorage.getItem("UseItem"));
+              Items.data.datasets[1].data = JSON.parse(localStorage.getItem("FreeItem"));
+              Items.update();
+            } else {
+              alert("Cannot have more than 8 items on one chart.");
+            }
+          }
+          break;
+        case btnValue == "Items" && status == "Edit":
+          var message = (document.getElementById("thirdBox").value);
+          Items.data.datasets[firstBox].data[secondBox] = message;
+          if(firstBox == 0){
+            let UseItem = JSON.parse(localStorage.getItem("UseItem"));
+            UseItem[secondBox] = message;
+            localStorage.setItem("UseItem", JSON.stringify(UseItem));
+          }
+          else if (firstBox == 1){
+            let FreeItem = JSON.parse(localStorage.getItem("FreeItem"));
+            FreeItem[secondBox] = message;
+            console.log(message, FreeItem);
+            localStorage.setItem("FreeItem", JSON.stringify(FreeItem));
+          }
+          Items.update();
+          break;
+        case btnValue == "Items" && status == "Delete":
+          Items.data.labels.splice(firstBox, 1);
+          Items.data.datasets[0].data.splice(firstBox, 1);
+          Items.data.datasets[1].data.splice(firstBox, 1);
+          var ItemLabels = Items.data.labels;
+          var FreeItem = Items.data.datasets[0].data;
+          var UseItem = Items.data.datasets[0].data;
+          localStorage.setItem("ItemLabels", JSON.stringify(ItemLabels));
+          localStorage.setItem("FreeItem", JSON.stringify(FreeItem));
+          localStorage.setItem("UseItem", JSON.stringify(UseItem));
+          Items.update();
+          break;
+        case btnValue == "Venues" && status == "Add":
+          if (JSON.parse(localStorage.getItem("VenueLabels")).length < 8){
+            let VenueLabels = JSON.parse(localStorage.getItem("VenueLabels"));
+            let Venue = JSON.parse(localStorage.getItem("Venue"));
+            VenueLabels.push(document.getElementById("firstBox").value);
+            Venue.push(document.getElementById("secondBox").value);
+            localStorage.setItem("VenueLabels", JSON.stringify(VenueLabels));
+            localStorage.setItem("Venue", JSON.stringify(Venue));
+            // Chart data needs to reset
+            Venues.data.labels = JSON.parse(localStorage.getItem("VenueLabels"));
+            Venues.data.datasets[0].data = JSON.parse(localStorage.getItem("Venue"));
+            Venues.update();
+          } else {
+            alert("Cannot have more than 8 items on one chart.");
+          }
+          break;
+        case btnValue == "Venues" && status == "Edit":
+          Venues.data.datasets[0].data[firstBox] = secondBox;
+          let VenueData = JSON.parse(localStorage.getItem("Venue"));
+          VenueData[firstBox] = secondBox;
+          localStorage.setItem("Venue", JSON.stringify(VenueData));
+          Venues.update();
+          break;
+        case btnValue == "Venues" && status == "Delete":
+          Venues.data.labels.splice(firstBox, 1);
+          Venues.data.datasets[0].data.splice(firstBox, 1);
+          var VenueLabels = Venues.data.labels;
+          var Venue = Venues.data.datasets[0].data;
+          localStorage.setItem("VenueLabels", JSON.stringify(VenueLabels));
+          localStorage.setItem("Venue", JSON.stringify(Venue));
+          Venues.update();
+          break;
+        case btnValue == "Teachers" && status == "Add":
+          var Teachers = JSON.parse(localStorage.getItem("Teachers"));
+          var TeacherEducation = JSON.parse(localStorage.getItem("TeacherEducation"));;
+          Teachers.push(document.getElementById("firstBox").value);
+          TeacherEducation.push(document.getElementById("secondBox").value);
+          localStorage.setItem("Teachers", JSON.stringify(Teachers));
+          localStorage.setItem("TeacherEducation", JSON.stringify(TeacherEducation));
+          processTeachers(Teachers, TeacherEducation);
+          myTable.row.add([document.getElementById("firstBox").value, secondBox]).draw( false );
+          break;
+        case btnValue == "Teachers" && status == "Edit":
+          var Teachers = JSON.parse(localStorage.getItem("Teachers"));
+          var TeacherEducation = JSON.parse(localStorage.getItem("TeacherEducation"));
+          TeacherEducation[firstBox] = secondBox;
+          localStorage.setItem("TeacherEducation", JSON.stringify(TeacherEducation));
+          processTeachers(Teachers, TeacherEducation);
+          myTable.cell(firstBox, 1).data(secondBox);
+          break;
+        case btnValue == "Teachers" && status == "Delete":
+          var Teachers = JSON.parse(localStorage.getItem("Teachers"));
+          var TeacherEducation = JSON.parse(localStorage.getItem("TeacherEducation"));;
+          Teachers.splice(firstBox, 1);
+          TeacherEducation.splice(secondBox, 1);
+          localStorage.setItem("Teachers", JSON.stringify(Teachers));
+          localStorage.setItem("TeacherEducation", JSON.stringify(TeacherEducation));
+          processTeachers(Teachers, TeacherEducation);
+          myTable.row(firstBox).remove().draw( false );
+          break;
+        default:
+          alert("Something went wrong.");
+          break;
       }
-      break;
-    case btnValue == "Students" && status == "Edit":
-      Students.data.datasets[0].data[firstBox] = secondBox; 
-      var SubjectData = JSON.parse(localStorage.getItem("SubjectData"));
-      SubjectData[firstBox] = secondBox;
-      localStorage.setItem("SubjectData", JSON.stringify(SubjectData));
-      Students.update();
-      break;
-    case btnValue == "Students" && status == "Delete":
-      Students.data.datasets[0].data.splice(firstBox, 1);
-      Students.data.labels.splice(firstBox, 1);
-      var SubjectData = Students.data.datasets[0].data;
-      var SubjectLabel = Students.data.labels;
-      localStorage.setItem("SubjectData", JSON.stringify(SubjectData));
-      localStorage.setItem("SubjectLabel", JSON.stringify(SubjectLabel));
-      Students.update();
-      break;
-    case btnValue == "Computers" && status == "Edit":
-      Computers.data.datasets[0].data[firstBox] = secondBox;
-      var ComputersData = JSON.parse(localStorage.getItem("Computers"));
-      ComputersData[firstBox] = secondBox;
-      localStorage.setItem("Computers", JSON.stringify(ComputersData));
-      Computers.update();
-      break;
-    case btnValue == "Items" && status == "Add":
-      if (JSON.parse(localStorage.getItem("ItemLabels")).length < 8){
-        let ItemLabels = JSON.parse(localStorage.getItem("ItemLabels"));
-        let UseItem = JSON.parse(localStorage.getItem("UseItem"));
-        let FreeItem = JSON.parse(localStorage.getItem("FreeItem"));
-        ItemLabels.push(document.getElementById("firstBox").value);
-        UseItem.push(document.getElementById("secondBox").value);
-        FreeItem.push(document.getElementById("thirdBox").value);
-        localStorage.setItem("ItemLabels", JSON.stringify(ItemLabels));
-        localStorage.setItem("UseItem", JSON.stringify(UseItem));
-        localStorage.setItem("FreeItem", JSON.stringify(FreeItem));
-        // Chart data needs to reset
-        Items.data.labels = JSON.parse(localStorage.getItem("ItemLabels"));
-        Items.data.datasets[0].data = JSON.parse(localStorage.getItem("UseItem"));
-        Items.data.datasets[1].data = JSON.parse(localStorage.getItem("FreeItem"));
-        Items.update();
-      } else {
-        alert("Cannot have more than 8 items on one chart.");
-      }
-      break;
-    case btnValue == "Items" && status == "Edit":
-      var message = (document.getElementById("thirdBox").value);
-      Items.data.datasets[firstBox].data[secondBox] = message;
-      if(firstBox == 0){
-        let InUseItem = JSON.parse(localStorage.getItem("UseItem"));
-        InUseItem[firstBox] = message;
-        localStorage.setItem("UseItem", JSON.stringify(InUseItem));
-      }
-      else if (firstBox == 1){
-        let FreeItem = JSON.parse(localStorage.getItem("FreeItem"));
-        FreeItem[firstBox] = message;
-        localStorage.setItem("FreeItem", JSON.stringify(FreeItem));
-      }
-      Items.update();
-      break;
-    case btnValue == "Items" && status == "Delete":
-      Items.data.labels.splice(firstBox, 1);
-      Items.data.datasets[0].data.splice(firstBox, 1);
-      Items.data.datasets[1].data.splice(firstBox, 1);
-      var ItemLabels = Items.data.labels;
-      var FreeItem = Items.data.datasets[0].data;
-      var UseItem = Items.data.datasets[0].data;
-      localStorage.setItem("ItemLabels", JSON.stringify(ItemLabels));
-      localStorage.setItem("FreeItem", JSON.stringify(FreeItem));
-      localStorage.setItem("UseItem", JSON.stringify(UseItem));
-      Items.update();
-      break;
-    case btnValue == "Venues" && status == "Add":
-      if (JSON.parse(localStorage.getItem("VenueLabels")).length < 8){
-        let VenueLabels = JSON.parse(localStorage.getItem("VenueLabels"));
-        let Venue = JSON.parse(localStorage.getItem("Venue"));
-        VenueLabels.push(document.getElementById("firstBox").value);
-        Venue.push(document.getElementById("secondBox").value);
-        localStorage.setItem("VenueLabels", JSON.stringify(VenueLabels));
-        localStorage.setItem("Venue", JSON.stringify(Venue));
-        // Chart data needs to reset
-        Venues.data.labels = JSON.parse(localStorage.getItem("VenueLabels"));
-        Venues.data.datasets[0].data = JSON.parse(localStorage.getItem("Venue"));
-        Venues.update();
-      } else {
-        alert("Cannot have more than 8 items on one chart.");
-      }
-      break;
-    case btnValue == "Venues" && status == "Edit":
-      Venues.data.datasets[0].data[firstBox] = secondBox;
-      let VenueData = JSON.parse(localStorage.getItem("VenueData"));
-      VenueData[firstBox] = secondBox;
-      localStorage.setItem("Venue", JSON.stringify(VenueData));
-      Venues.update();
-      break;
-    case btnValue == "Venues" && status == "Delete":
-      Venues.data.labels.splice(firstBox, 1);
-      Venues.data.datasets[0].data.splice(firstBox, 1);
-      var VenueLabels = Venues.data.labels;
-      var Venue = Venues.data.datasets[0].data;
-      localStorage.setItem("VenueLabels", JSON.stringify(VenueLabels));
-      localStorage.setItem("Venue", JSON.stringify(Venue));
-      Venues.update();
-      break;
-    case btnValue == "Teachers" && status == "Add":
-      var Teachers = JSON.parse(localStorage.getItem("Teachers"));
-      var TeacherEducation = JSON.parse(localStorage.getItem("TeacherEducation"));;
-      Teachers.push(document.getElementById("firstBox").value);
-      TeacherEducation.push(document.getElementById("secondBox").value);
-      localStorage.setItem("Teachers", JSON.stringify(Teachers));
-      localStorage.setItem("TeacherEducation", JSON.stringify(TeacherEducation));
-      processTeachers(Teachers, TeacherEducation);
-      myTable.row.add([document.getElementById("firstBox").value, message]).draw( false );
-      break;
-    case btnValue == "Teachers" && status == "Edit":
-      var Teachers = JSON.parse(localStorage.getItem("Teachers"));
-      var TeacherEducation = JSON.parse(localStorage.getItem("TeacherEducation"));
-      TeacherEducation[firstBox] = secondBox;
-      localStorage.setItem("TeacherEducation", JSON.stringify(TeacherEducation));
-      processTeachers(Teachers, TeacherEducation);
-      myTable.cell(firstBox, 1).data(secondBox);
-      break;
-    case btnValue == "Teachers" && status == "Delete":
-      var Teachers = JSON.parse(localStorage.getItem("Teachers"));
-      var TeacherEducation = JSON.parse(localStorage.getItem("TeacherEducation"));;
-      Teachers.splice(firstBox, 1);
-      TeacherEducation.splice(secondBox, 1);
-      localStorage.setItem("Teachers", JSON.stringify(Teachers));
-      localStorage.setItem("TeacherEducation", JSON.stringify(TeacherEducation));
-      processTeachers(Teachers, TeacherEducation);
-      myTable.row(firstBox).remove().draw( false );
-      break;
-    default:
-      alert("Something went wrong.");
-      break;
-  }
+    
+  } 
 }
 </script>
 </body>
