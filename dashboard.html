@@ -184,6 +184,8 @@
             </div>
             <div class="form-group" id="thirdTextContainer"> 
             </div>
+            <div class="form-group" id="fourthTextContainer"> 
+            </div>
           </form>
         <div class="modal-footer">
           <a class="btn btn-primary" href="#" id="submitBtn" onclick="editData(submitBtn.value)" data-dismiss="modal">Submit</a>
@@ -199,7 +201,7 @@
 <!-- Custom scripts for all pages-->
 <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
- <!-- Page level custom scripts -->
+<!-- Page level custom scripts -->
 <script>
 var status;
 var colours = ['#4e73df', '#1cc88a', '#36b9cc', '#eb4034', '#ffce56', '#9966ff', '#d99b00','#f04dea'];
@@ -265,9 +267,11 @@ function openModal(number, option){
   $("#firstBox").remove();
   $("#secondBox").remove();
   $("#thirdBox").remove();
+  $("#fourthBox").remove();
   $("#boxLabel1").remove();
   $("#boxLabel2").remove();
   $("#boxLabel3").remove();
+  $("#boxLabel4").remove();
   switch(true){
     case number == 1 && option == "Add":
       dropdownToText(1);
@@ -382,11 +386,18 @@ function dropdownLoop(dropdownContent, number, status1){ // Edit + Delete
     $("#secondTextContainer").append(boxLabel2);
     $("#secondTextContainer").append(secondBox);
   }
+  if (number != 2 && status == "Edit"){
+    $("#thirdTextContainer").append(boxLabel3);
+    $("#thirdTextContainer").append(thirdBox);
+    document.getElementById("secondBox").value = dropdownContent[0][0];
+  }
   status != "Delete" ? document.getElementById("ModalLabel").innerHTML = "Edit data" : document.getElementById("ModalLabel").innerHTML = "Delete data";
   switch(true){
     case number == 1 && status == "Edit":
       document.getElementById("boxLabel1").innerHTML = "Choose Subject:";
-      document.getElementById("boxLabel2").innerHTML = "Quantity:";
+      document.getElementById("boxLabel2").innerHTML = "Subject Name:";
+      document.getElementById("boxLabel3").innerHTML = "Quantity:";
+      document.getElementById("thirdBox").value = JSON.parse(localStorage.getItem("SubjectData"))[0];
       document.getElementById("submitBtn").value = "Students";
       break;
     case number == 1 && status == "Delete":
@@ -396,15 +407,21 @@ function dropdownLoop(dropdownContent, number, status1){ // Edit + Delete
     case number == 2 && status == "Edit":
       document.getElementById("boxLabel1").innerHTML = "Choose Computer Status:";
       document.getElementById("boxLabel2").innerHTML = "Quantity:";
+      document.getElementById("secondBox").value = JSON.parse(localStorage.getItem("Computers"))[0];
       document.getElementById("submitBtn").value = "Computers";
       break;
     case number == 3 && status == "Edit":
       k = 2;
-      $("#thirdTextContainer").append(boxLabel3);
-      $("#thirdTextContainer").append(thirdBox);
+      var fourthBox = "<input class='form-control' id='fourthBox' type='textbox'/>";
+      var boxLabel4 = "<label class='col-form-label' id='boxLabel4'></label>";
+      $("#fourthTextContainer").append(boxLabel4);
+      $("#fourthTextContainer").append(fourthBox);
+      document.getElementById("thirdBox").value = dropdownContent[1][0];
       document.getElementById("boxLabel1").innerHTML = "Choose Availabilty:";
       document.getElementById("boxLabel2").innerHTML = "Choose Item:";
-      document.getElementById("boxLabel3").innerHTML = "Quantity:";
+      document.getElementById("boxLabel3").innerHTML = "Item Name:";
+      document.getElementById("boxLabel4").innerHTML = "Quantity:";
+      document.getElementById("fourthBox").value = JSON.parse(localStorage.getItem("UseItem"))[0];
       document.getElementById("submitBtn").value = "Items";
       break;
     case number == 3 && status == "Delete":
@@ -413,7 +430,9 @@ function dropdownLoop(dropdownContent, number, status1){ // Edit + Delete
       break;
     case number == 4 && status == "Edit":
       document.getElementById("boxLabel1").innerHTML = "Choose Venue:";
-      document.getElementById("boxLabel2").innerHTML = "Quantity:";
+      document.getElementById("boxLabel2").innerHTML = "Venue Name:";
+      document.getElementById("boxLabel3").innerHTML = "Quantity:";
+      document.getElementById("thirdBox").value = JSON.parse(localStorage.getItem("Venue"))[0];
       document.getElementById("submitBtn").value = "Venues";
       break;
     case number == 4 && status == "Delete":
@@ -422,7 +441,9 @@ function dropdownLoop(dropdownContent, number, status1){ // Edit + Delete
       break;
     case number == 5 && status == "Edit":
       document.getElementById("boxLabel1").innerHTML = "Choose Teacher:";
-      document.getElementById("boxLabel2").innerHTML = "Education Background:";
+      document.getElementById("boxLabel2").innerHTML = "Teacher Name:";
+      document.getElementById("boxLabel3").innerHTML = "Education Background:";
+      document.getElementById("thirdBox").value = JSON.parse(localStorage.getItem("TeacherEducation"))[0];
       document.getElementById("submitBtn").value = "Teachers";
       break;
     case number == 5 && status == "Delete":
@@ -444,6 +465,43 @@ function dropdownLoop(dropdownContent, number, status1){ // Edit + Delete
     }
   }
 }
+// Execute on dropdowns change
+$(document).on('change',"#firstBox", function(){
+  if(!(document.getElementById("submitBtn").value == "Computers")){
+    if ($('#secondBox').is('select') == false){
+      document.getElementById("secondBox").value = $("#firstBox option:selected").text();
+      switch(document.getElementById("submitBtn").value){
+        case "Students":
+          document.getElementById("thirdBox").value = JSON.parse(localStorage.getItem("SubjectData"))[$("#firstBox option:selected").val()];
+          break;
+        case "Venues":
+          document.getElementById("thirdBox").value = JSON.parse(localStorage.getItem("Venue"))[$("#firstBox option:selected").val()];
+          break;
+        case "Teachers":
+          document.getElementById("thirdBox").value = JSON.parse(localStorage.getItem("TeacherEducation"))[$("#firstBox option:selected").val()];
+          break;
+      }
+    } else {
+        if(document.getElementById("firstBox").value == 0){
+          document.getElementById("fourthBox").value = JSON.parse(localStorage.getItem("UseItem"))[$("#secondBox option:selected").val()];
+        } else if (document.getElementById("firstBox").value == 1){
+          document.getElementById("fourthBox").value = JSON.parse(localStorage.getItem("FreeItem"))[$("#secondBox option:selected").val()];
+        }
+      }
+  } else if((document.getElementById("submitBtn").value == "Computers")){
+      document.getElementById("secondBox").value = JSON.parse(localStorage.getItem("Computers"))[$("#firstBox option:selected").val()];
+  }
+});  
+$(document).on('change',"#secondBox", function(){
+  if ($('#fourthBox').length) {
+    document.getElementById("thirdBox").value = $("#secondBox option:selected").text();
+    if (document.getElementById("firstBox").value == 0){
+      document.getElementById("fourthBox").value = JSON.parse(localStorage.getItem("UseItem"))[$("#secondBox option:selected").val()];
+    } else if (document.getElementById("firstBox").value == 1) {
+      document.getElementById("fourthBox").value = JSON.parse(localStorage.getItem("FreeItem"))[$("#secondBox option:selected").val()];
+    }
+  }
+});  
 // Table
 var myTable = $('#dataTable').DataTable({
   data: JSON.parse(localStorage.getItem("TeachersData")),
@@ -452,7 +510,6 @@ var myTable = $('#dataTable').DataTable({
     {"title": "Education Background" } 
   ]
 });
-
 // bar graph
 var ctx = document.getElementById('Students').getContext('2d');
 var Students = new Chart(ctx, {
@@ -624,41 +681,47 @@ var Venues = new Chart(ctx, {
         }
     }
 });
-
+// Validation
 function checkText(btnValue){
   let firstBox = (document.getElementById("firstBox").value == "") ? (alert("First textbox must not be empty"), false) : document.getElementById("firstBox").value;
-  let secondBox; let thirdBox;
-  if (document.getElementById("secondBox") != null) {
+  let secondBox; let thirdBox; let fourthBox;
+  if (status == "Edit"){
     secondBox = (document.getElementById("secondBox").value == "") ? (alert("Second textbox must not be empty"), false) : document.getElementById("secondBox").value;
-    if (!(btnValue == "Items" && status == "Edit") | !(status == "Delete")){ 
-      if (btnValue != "Teachers"){
-        secondBox = isNaN(secondBox) ? (alert("Second Textbox must be a number."), false) : secondBox;
-      } 
+    if (btnValue == "Computers") {
+      secondBox = isNaN(secondBox) ? (alert("Second Textbox must be a number."), false) : secondBox;
     }
-  } else {
-    secondBox = true;
+    if (btnValue != "Computers"){
+      thirdBox = (document.getElementById("thirdBox").value == "") ? (alert("Third textbox must not be empty"), false) : document.getElementById("thirdBox").value;
+    }
+  } else if (status == "Add") {
+    secondBox = (document.getElementById("secondBox").value == "") ? (alert("Second textbox must not be empty"), false) : document.getElementById("secondBox").value;
+    secondBox = isNaN(secondBox) ? (alert("Second Textbox must be a number."), false) : secondBox;
+    if (btnValue == "Items") {
+      thirdBox = (document.getElementById("thirdBox").value == "") ? (alert("Third textbox must not be empty"), false) : document.getElementById("thirdBox").value;
+      thirdBox = isNaN(thirdBox) ? (alert("Third Textbox must be a number."), false) : thirdBox;
+    }
   }
-  if (btnValue == "Items" && status != "Delete"){
-    thirdBox = (document.getElementById("thirdBox").value == "") ? (alert("Third textbox must not be empty"), false) : document.getElementById("thirdBox").value;
-    thirdBox = isNaN(thirdBox) ? (alert("Third Textbox must be a number."), false) : thirdBox;
+  if (btnValue == "Items" && status == "Edit"){
+    fourthBox = (document.getElementById("fourthBox").value == "") ? (alert("Fourth textbox must not be empty"), false) : document.getElementById("fourthBox").value;
+    fourthBox = isNaN(fourthBox) ? (alert("Fourth Textbox must be a number."), false) : fourthBox;
   }
   return {
     firstBox: firstBox,
     secondBox: secondBox,
     thirdBox: thirdBox,
+    fourthBox: fourthBox,
   };
 }
-
 // Edit data
 function editData(btnValue){
-  let {firstBox, secondBox, thirdBox} = checkText(btnValue);
+  let {firstBox, secondBox, thirdBox, fourthBox} = checkText(btnValue);
   //$("#firstBox option:selected").text() // Dropdown
   if (firstBox || secondBox !== false){
       switch(true){
         case btnValue == "Students" && status == "Add":
           if (JSON.parse(localStorage.getItem("SubjectLabel")).length < 8){
-            let SubjectLabel = JSON.parse(localStorage.getItem("SubjectLabel"));
-            let SubjectData = JSON.parse(localStorage.getItem("SubjectData"));
+            var SubjectLabel = JSON.parse(localStorage.getItem("SubjectLabel"));
+            var SubjectData = JSON.parse(localStorage.getItem("SubjectData"));
             SubjectLabel.push(document.getElementById("firstBox").value);
             SubjectData.push(document.getElementById("secondBox").value);
             localStorage.setItem("SubjectLabel", JSON.stringify(SubjectLabel));
@@ -672,10 +735,15 @@ function editData(btnValue){
           }
           break;
         case btnValue == "Students" && status == "Edit":
-          Students.data.datasets[0].data[firstBox] = secondBox; 
+          var SubjectLabel = JSON.parse(localStorage.getItem("SubjectLabel"));
           var SubjectData = JSON.parse(localStorage.getItem("SubjectData"));
-          SubjectData[firstBox] = secondBox;
+          SubjectLabel[firstBox] = secondBox;
+          SubjectData[firstBox] = thirdBox;
+          localStorage.setItem("SubjectLabel", JSON.stringify(SubjectLabel));
           localStorage.setItem("SubjectData", JSON.stringify(SubjectData));
+          // Chart data needs to reset
+          Students.data.labels[firstBox] = SubjectLabel[firstBox];
+          Students.data.datasets[0].data[firstBox] = SubjectData[firstBox]; 
           Students.update();
           break;
         case btnValue == "Students" && status == "Delete":
@@ -697,9 +765,9 @@ function editData(btnValue){
         case btnValue == "Items" && status == "Add":
           if(thirdBox != false){
             if (JSON.parse(localStorage.getItem("ItemLabels")).length < 8){
-              let ItemLabels = JSON.parse(localStorage.getItem("ItemLabels"));
-              let UseItem = JSON.parse(localStorage.getItem("UseItem"));
-              let FreeItem = JSON.parse(localStorage.getItem("FreeItem"));
+              var ItemLabels = JSON.parse(localStorage.getItem("ItemLabels"));
+              var UseItem = JSON.parse(localStorage.getItem("UseItem"));
+              var FreeItem = JSON.parse(localStorage.getItem("FreeItem"));
               ItemLabels.push(document.getElementById("firstBox").value);
               UseItem.push(document.getElementById("secondBox").value);
               FreeItem.push(document.getElementById("thirdBox").value);
@@ -717,19 +785,22 @@ function editData(btnValue){
           }
           break;
         case btnValue == "Items" && status == "Edit":
-          var message = (document.getElementById("thirdBox").value);
-          Items.data.datasets[firstBox].data[secondBox] = message;
+          var ItemLabels = JSON.parse(localStorage.getItem("ItemLabels"));
+          ItemLabels[secondBox] = thirdBox;
           if(firstBox == 0){
             let UseItem = JSON.parse(localStorage.getItem("UseItem"));
-            UseItem[secondBox] = message;
+            UseItem[secondBox] = fourthBox;
             localStorage.setItem("UseItem", JSON.stringify(UseItem));
           }
           else if (firstBox == 1){
             let FreeItem = JSON.parse(localStorage.getItem("FreeItem"));
-            FreeItem[secondBox] = message;
-            console.log(message, FreeItem);
+            FreeItem[secondBox] = fourthBox;
             localStorage.setItem("FreeItem", JSON.stringify(FreeItem));
           }
+          localStorage.setItem("ItemLabels", JSON.stringify(ItemLabels));
+          // Chart data needs to reset
+          Items.data.labels[firstBox] = thirdBox; 
+          Items.data.datasets[firstBox].data[secondBox] = fourthBox;
           Items.update();
           break;
         case btnValue == "Items" && status == "Delete":
@@ -746,10 +817,10 @@ function editData(btnValue){
           break;
         case btnValue == "Venues" && status == "Add":
           if (JSON.parse(localStorage.getItem("VenueLabels")).length < 8){
-            let VenueLabels = JSON.parse(localStorage.getItem("VenueLabels"));
-            let Venue = JSON.parse(localStorage.getItem("Venue"));
-            VenueLabels.push(document.getElementById("firstBox").value);
-            Venue.push(document.getElementById("secondBox").value);
+            var VenueLabels = JSON.parse(localStorage.getItem("VenueLabels"));
+            var Venue = JSON.parse(localStorage.getItem("Venue"));
+            VenueLabels.push(firstBox);
+            Venue.push(secondBox);
             localStorage.setItem("VenueLabels", JSON.stringify(VenueLabels));
             localStorage.setItem("Venue", JSON.stringify(Venue));
             // Chart data needs to reset
@@ -761,10 +832,15 @@ function editData(btnValue){
           }
           break;
         case btnValue == "Venues" && status == "Edit":
-          Venues.data.datasets[0].data[firstBox] = secondBox;
-          let VenueData = JSON.parse(localStorage.getItem("Venue"));
-          VenueData[firstBox] = secondBox;
+          var VenueLabels = JSON.parse(localStorage.getItem("VenueLabels"));
+          var VenueData = JSON.parse(localStorage.getItem("Venue"));
+          VenueLabels[firstBox] = secondBox;
+          VenueData[firstBox] = thirdBox;
+          localStorage.setItem("VenueLabels", JSON.stringify(VenueLabels));
           localStorage.setItem("Venue", JSON.stringify(VenueData));
+          // Chart data needs to reset
+          Venues.data.labels[firstBox] = secondBox;
+          Venues.data.datasets[0].data[firstBox] = thirdBox;
           Venues.update();
           break;
         case btnValue == "Venues" && status == "Delete":
@@ -789,10 +865,13 @@ function editData(btnValue){
         case btnValue == "Teachers" && status == "Edit":
           var Teachers = JSON.parse(localStorage.getItem("Teachers"));
           var TeacherEducation = JSON.parse(localStorage.getItem("TeacherEducation"));
-          TeacherEducation[firstBox] = secondBox;
+          Teachers[firstBox] = secondBox;
+          TeacherEducation[firstBox] = thirdBox;
+          localStorage.setItem("Teachers", JSON.stringify(Teachers));
           localStorage.setItem("TeacherEducation", JSON.stringify(TeacherEducation));
           processTeachers(Teachers, TeacherEducation);
-          myTable.cell(firstBox, 1).data(secondBox);
+          myTable.cell(firstBox, 0).data(secondBox);
+          myTable.cell(firstBox, 1).data(thirdBox);
           break;
         case btnValue == "Teachers" && status == "Delete":
           var Teachers = JSON.parse(localStorage.getItem("Teachers"));
@@ -807,8 +886,7 @@ function editData(btnValue){
         default:
           alert("Something went wrong.");
           break;
-      }
-    
+      }   
   } 
 }
 </script>
