@@ -31,6 +31,8 @@
         <a class="nav-item nav-link" href="index.html">Home</a>
         <a class="nav-item nav-link" href="VisualSort.html">Sorting Visualiser</a>
         <a class="nav-item active nav-link" href="dashboard.html">Dashboard</a>
+        <a class="nav item nav-link" href="DBMS.html">DBMS</a>
+        <a class="nav item nav-link" href="Game.html">Game</a>
       </div>
     </div>
   </nav>
@@ -467,29 +469,31 @@ function dropdownLoop(dropdownContent, number, status1){ // Edit + Delete
 }
 // Execute on dropdowns change
 $(document).on('change',"#firstBox", function(){
-  if(!(document.getElementById("submitBtn").value == "Computers")){
-    if ($('#secondBox').is('select') == false){
-      document.getElementById("secondBox").value = $("#firstBox option:selected").text();
-      switch(document.getElementById("submitBtn").value){
-        case "Students":
-          document.getElementById("thirdBox").value = JSON.parse(localStorage.getItem("SubjectData"))[$("#firstBox option:selected").val()];
-          break;
-        case "Venues":
-          document.getElementById("thirdBox").value = JSON.parse(localStorage.getItem("Venue"))[$("#firstBox option:selected").val()];
-          break;
-        case "Teachers":
-          document.getElementById("thirdBox").value = JSON.parse(localStorage.getItem("TeacherEducation"))[$("#firstBox option:selected").val()];
-          break;
-      }
-    } else {
-        if(document.getElementById("firstBox").value == 0){
-          document.getElementById("fourthBox").value = JSON.parse(localStorage.getItem("UseItem"))[$("#secondBox option:selected").val()];
-        } else if (document.getElementById("firstBox").value == 1){
-          document.getElementById("fourthBox").value = JSON.parse(localStorage.getItem("FreeItem"))[$("#secondBox option:selected").val()];
+  if ($('#firstBox').is('select') == true){
+    if(!(document.getElementById("submitBtn").value == "Computers")){
+      if ($('#secondBox').is('select') == false){
+        document.getElementById("secondBox").value = $("#firstBox option:selected").text();
+        switch(document.getElementById("submitBtn").value){
+          case "Students":
+            document.getElementById("thirdBox").value = JSON.parse(localStorage.getItem("SubjectData"))[$("#firstBox option:selected").val()];
+            break;
+          case "Venues":
+            document.getElementById("thirdBox").value = JSON.parse(localStorage.getItem("Venue"))[$("#firstBox option:selected").val()];
+            break;
+          case "Teachers":
+            document.getElementById("thirdBox").value = JSON.parse(localStorage.getItem("TeacherEducation"))[$("#firstBox option:selected").val()];
+            break;
         }
-      }
-  } else if((document.getElementById("submitBtn").value == "Computers")){
-      document.getElementById("secondBox").value = JSON.parse(localStorage.getItem("Computers"))[$("#firstBox option:selected").val()];
+      } else {
+          if(document.getElementById("firstBox").value == 0){
+            document.getElementById("fourthBox").value = JSON.parse(localStorage.getItem("UseItem"))[$("#secondBox option:selected").val()];
+          } else if (document.getElementById("firstBox").value == 1){
+            document.getElementById("fourthBox").value = JSON.parse(localStorage.getItem("FreeItem"))[$("#secondBox option:selected").val()];
+          }
+        }
+    } else if((document.getElementById("submitBtn").value == "Computers")){
+        document.getElementById("secondBox").value = JSON.parse(localStorage.getItem("Computers"))[$("#firstBox option:selected").val()];
+    }
   }
 });  
 $(document).on('change',"#secondBox", function(){
