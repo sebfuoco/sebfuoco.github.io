@@ -17,7 +17,6 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
 </head>
 <title>Sorting Visualiser</title>
 <body>
-<!-- Navigation bar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 	<a href="index.html"><div class="navbar-brand">Portfolio</div></a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,30 +30,28 @@ integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07j
 		</div>
 	</div>
 </nav>
-<!-- Body Container -->
 <div class="container-fluid bg-light">
 	<div class="row justify-content-center">
 		<div class="col p-3 mb-2 text-dark text-center">
 			<h1 class="display-4">Sorting Visualiser</h1><div style="height: 1%;"></div><input type="range" min="5" max="50" value="30" class="slider" id="ArrayChange"><p>number of values: <span id="value"></span></p>
 			<input type="range" min="10" max="1000" value="100" class="slider" id="SpeedChange"><p>Speed(ms): <span id="speed"></span></p>
-			<!-- Bar Chart -->
-	          	<div class="row btn-group d-flex pl-2 pr-2">
-					<button type="button" class="btn btn-secondary btn-lg" id="RandomArray">Random Unsorted</button>
-					<button type="button" class="btn btn-secondary border-left btn-lg" id="Array">Unsorted Array</button>
+			<div class="row btn-group d-flex pl-2 pr-2">
+				<button type="button" class="btn btn-secondary btn-lg" id="RandomArray">Random Unsorted</button>
+				<button type="button" class="btn btn-secondary border-left btn-lg" id="Array">Unsorted Array</button>
+			</div>
+			<div class="row btn-group d-flex p-2" role="group"> 
+				<button id="btnGroupDrop" type="button" class="btn btn-primary border-left btn-lg" data-toggle="dropdown">Choose Sorting Algorithm</button>	
+				<div class="dropdown-menu dropdown-menu-wide" aria-labelledby="btnGroupDrop">
+					<a class="dropdown-item" id="BubbleSort">Bubble Sort</a>
+					<a class="dropdown-item" id="SelectionSort">Selection Sort</a>
+					<a class="dropdown-item" id="InsertionSort">Insertion Sort</a>
+					<a class="dropdown-item" id="MergeSort">Merge Sort</a>
+					<a class="dropdown-item" id="QuickSort">Quick Sort</a>
 				</div>
-				<div class="row btn-group d-flex p-2" role="group"> 
-					<button id="btnGroupDrop" type="button" class="btn btn-primary border-left btn-lg" data-toggle="dropdown">Choose Sorting Algorithm</button>	
-					<div class="dropdown-menu dropdown-menu-wide" aria-labelledby="btnGroupDrop">
-						<a class="dropdown-item" id="BubbleSort">Bubble Sort</a>
-						<a class="dropdown-item" id="SelectionSort">Selection Sort</a>
-						<a class="dropdown-item" id="InsertionSort">Insertion Sort</a>
-						<a class="dropdown-item" id="MergeSort">Merge Sort</a>
-						<a class="dropdown-item" id="QuickSort">Quick Sort</a>
-					</div>
-				</div>
-            	<div class="row chart-bar bg-white p-2" style="position: relative; height:50vh;">
-              		<canvas id="Sort"></canvas>
-           		</div>
+			</div>
+			<div class="row chart-bar bg-white p-2" style="position: relative; height:50vh;">
+				<canvas id="Sort"></canvas>
+			</div>
 			<div class="row justify-content-center">
 				<p>Number of swaps:&nbsp;<p id="numOfSwaps"></p>&nbsp;|&nbsp;<p>Number of compares:</p>&nbsp;<p id="numOfComp"></p></p>
 			</div>

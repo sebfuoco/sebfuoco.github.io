@@ -12,6 +12,7 @@ let height = [];
 let swaps = 0; 
 let compares = 0;
 let randomArray = false;
+let isSorted = false;
 
 function nullifier(){
 	swaps = 0; compares = 0;
@@ -35,6 +36,7 @@ function fillArray(){
 			height.push(setHeight[i]);
 		}
 	}
+    isSorted = false;
 }
 
 function draw(type){
@@ -133,6 +135,7 @@ async function bubbleSort(){
 			document.getElementById("numOfComp").innerHTML = compares += 1;
         }
     }
+    isSorted = true;
 } 
 
 async function selectionSort(){
@@ -162,6 +165,7 @@ async function selectionSort(){
 		Sort.update();
 		document.getElementById("numOfSwaps").innerHTML = swaps += 1;
 	}
+    isSorted = true;
 }
 
 async function insertionSort(height) {
@@ -186,6 +190,7 @@ async function insertionSort(height) {
 	   	document.getElementById("numOfComp").innerHTML = compares += 1;
 	}
 	Sort.update();
+    isSorted = true;
 }
 
 async function mergeSort(height) { // Bottom Up Merge sort
@@ -231,7 +236,7 @@ async function mergeSort(height) { // Bottom Up Merge sort
 			sorted = buffer,
 			buffer = temp;
 	}
-	console.log(sorted);
+	isSorted = true;
 }
 
 async function mergeSwap(i){
@@ -254,6 +259,7 @@ async function quickSort(height, left, right) {
    		await quickSort(height, left, partitionIndex - 1);
    		await quickSort(height, partitionIndex + 1, right);
   	}
+    isSorted = true;
   	return height;
 }
 
@@ -305,27 +311,39 @@ $(document).ready(function(){
 	});
 	// Sorting algorithms
 	$("#ArrayChange").change(function() {
-		nullifier();
-		draw("numberChange");
+        if (isSorted === false) {
+            nullifier();
+            draw("numberChange");
+        }
 	});
 	$("#BubbleSort").click(function(){
-		nullifier();
-		bubbleSort();
+        if (isSorted === false) {
+            nullifier();
+            bubbleSort();
+        }
 	});
 	$("#SelectionSort").click(function(){
-		nullifier();
-		selectionSort();
+        if (isSorted === false) {
+            nullifier();
+            selectionSort();
+        }
 	});
 	$("#InsertionSort").click(function(){
-		nullifier();
-		insertionSort(height);
+        if (isSorted === false) {
+            nullifier();
+            insertionSort(height);
+        }
 	});
 	$("#MergeSort").click(function(){
-		nullifier();
-		mergeSort(height);
+        if (isSorted === false) {
+            nullifier();
+            mergeSort(height);
+        }
 	});
 	$("#QuickSort").click(function(){
-		nullifier();
-		quickSort(height, 0, (height.length - 1));
+        if (isSorted === false) {
+            nullifier();
+            quickSort(height, 0, (height.length - 1));
+        }
 	});
 });
